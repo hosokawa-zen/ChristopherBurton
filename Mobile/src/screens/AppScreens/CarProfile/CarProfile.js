@@ -18,7 +18,7 @@ import Swiper from 'react-native-swiper'
 import React from 'react'
 import auth from '@react-native-firebase/auth'
 import database from '@react-native-firebase/database'
-import {AudioPlayer} from 'react-native-audio-player-recorder'
+import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 import ImageView from 'react-native-image-view'
 import RNFS from 'react-native-fs'
 
@@ -36,6 +36,7 @@ export default class CarProfile extends React.Component {
     super(props)
     this.userId = ''
     this.myId = ''
+    this.audioPlayer = new AudioRecorderPlayer();
     ;(this.listRingtones = [
       {
         id: 1,
@@ -182,34 +183,42 @@ export default class CarProfile extends React.Component {
   }
 
   initAudioPlayer = () => {
-    AudioPlayer.onFinished = () => {
-      console.log('finished playback')
-      this.setState({paused: true, loaded: false, playing: false})
-    }
-    AudioPlayer.setFinishedSubscription()
-
-    AudioPlayer.onProgress = data => {
-      console.log('progress', data)
-    }
-    AudioPlayer.setProgressSubscription()
+    // AudioPlayer.onFinished = () => {
+    //   console.log('finished playback')
+    //   this.setState({paused: true, loaded: false, playing: false})
+    // }
+    // AudioPlayer.setFinishedSubscription()
+    //
+    // AudioPlayer.onProgress = data => {
+    //   console.log('progress', data)
+    // }
+    // AudioPlayer.setProgressSubscription()
   }
 
-  play = audioPath => {
+  play = async (audioPath) => {
     if (this.state.loaded) {
-      AudioPlayer.unpause()
+      await this.audioPlayer.pausePlayer();
       this.setState({paused: false, playing: true})
     } else {
-      AudioPlayer.playWithUrl(audioPath)
+      await this.audioPlayer.startPlayer(audioPath);
+      this.audioPlayer.addPlayBackListener((e) => {
+        console.log({
+          currentPositionSec: e.currentPosition,
+          currentDurationSec: e.duration,
+          playTime: this.audioPlayer.mmssss(Math.floor(e.currentPosition)),
+          duration: this.audioPlayer.mmssss(Math.floor(e.duration)),
+        });
+      });
       this.setState({paused: false, loaded: true, playing: true})
     }
   }
 
-  pause = () => {
-    AudioPlayer.pause()
+  pause = async () => {
+    await this.audioPlayer.pausePlayer();
     this.setState({paused: true, playing: false})
   }
 
-  playAudio = (paused, item) => {
+  playAudio = async (paused, item) => {
     let rev = this.state.revton
     let load = {...rev, playCount: rev.playCount + 1}
     let updates = {}
@@ -225,13 +234,13 @@ export default class CarProfile extends React.Component {
         alert('Data could not be updated.' + error)
       })
 
-    if (this.state.playing) this.pause()
-    else this.play(item.audioPath)
+    if (this.state.playing) await this.pause();
+    else await this.play(item.audioPath)
   }
 
-  onBack = () => {
+  onBack = async () => {
     this.props.navigation.goBack()
-    if (this.state.playing) AudioPlayer.pause()
+    if (this.state.playing) await this.audioPlayer.pausePlayer();
     this.setState({paused: true, playing: false})
   }
 

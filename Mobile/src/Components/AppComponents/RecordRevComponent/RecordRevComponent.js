@@ -30,7 +30,7 @@ export default class RecordRevComponent extends React.Component {
 
   onPress = () => {
     this.setState({paused: !this.state.paused})
-    this.props.onPlay(this.state.paused)
+    // this.props.onPlay(this.state.paused)
   }
 
   render() {

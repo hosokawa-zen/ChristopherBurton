@@ -1,10 +1,10 @@
 //====> System files <====//
 
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
 } from 'react-native-responsive-screen'
-import {View, Text, Image, TouchableOpacity, Modal, Alert} from 'react-native'
+import {View, Text, Image, TouchableOpacity, Modal, Alert, BackHandler} from 'react-native'
 import database from '@react-native-firebase/database'
 import auth from '@react-native-firebase/auth'
 import RNProgressHud from 'progress-hud'
@@ -22,436 +22,513 @@ import images from '../../../../assets/images'
 import styles from './styles'
 
 class SignUpScreen extends React.Component {
-  //====> Constructor Method <====//
+    //====> Constructor Method <====//
 
-  constructor (props) {
-    super(props)
+    constructor(props) {
+        super(props)
 
-    this.state = {
-      modalVisible: false,
-      view: 'this',
-      showPassword: true,
-      password: '',
-      checkValue: false,
-      email: '',
-      password: '',
-      emailValidate: false,
-      charLengthValidate: false,
-      charLetterValidate: false,
-      charNumberValidate: false,
-      charSpecValidate: false,
+        this.state = {
+            modalVisible: false,
+            showTerms: false,
+            view: 'this',
+            showPassword: true,
+            checkValue: false,
+            email: '',
+            password: '',
+            emailValidate: false,
+            charLengthValidate: false,
+            charLetterValidate: false,
+            charNumberValidate: false,
+            charSpecValidate: false,
+        }
+        this.userId = '';
     }
-    this.userId = ''
-  }
 
-  signupWithEmailPassword = () => {
-    try {
-      const self = this
-      if (
-        this.state.emailValidate &&
-        this.state.charLengthValidate &&
-        this.state.charLetterValidate &&
-        this.state.charNumberValidate &&
-        this.state.charSpecValidate
-      ) {
-        RNProgressHud.showWithStatus('Loading...')
-        auth()
-          .createUserWithEmailAndPassword(this.state.email, this.state.password)
-          .then(credential => {
+    componentDidMount() {
+        const {navigation} = this.props;
+        this.unSubscribeFocus = navigation.addListener('focus', () => {
+           if(this.state.showTerms){
+               this.setState({modalVisible: true, showTerms: false});
+           }
+        });
+    }
+
+    componentWillUnmount() {
+        if (this.unSubscribeFocus) {
+            this.unSubscribeFocus();
+        }
+    }
+
+    signupWithEmailPassword = () => {
+        try {
+            if (
+                this.state.emailValidate &&
+                this.state.charLengthValidate &&
+                this.state.charLetterValidate &&
+                this.state.charNumberValidate &&
+                this.state.charSpecValidate
+            ) {
+                RNProgressHud.showWithStatus('Loading...')
+                auth()
+                    .createUserWithEmailAndPassword(this.state.email, this.state.password)
+                    .then(credential => {
+                        RNProgressHud.dismiss()
+                        if (credential.user) {
+                            const user_id = credential.user.uid
+                            console.log('=================> credential: ', credential)
+                            var update = {}
+                            update[`users/${user_id}/userId`] = user_id
+                            update[`users/${user_id}/role`] = 3
+                            update[`users/${user_id}/password`] = this.state.password
+                            update[`users/${user_id}/email`] = this.state.email
+                            if (credential.displayName) {
+                                update[`users/${user_id}/firstName`] = ''
+                                update[`users/${user_id}/lastName`] = credential.displayName
+                            } else {
+                                update[`users/${user_id}/firstName`] = ''
+                                update[`users/${user_id}/lastName`] = 'Client'
+                            }
+                            update[`users/${user_id}/address`] = 'Your address'
+                            update[`users/${user_id}/age`] = ''
+                            if (credential.photoURL) {
+                                update[`users/${user_id}/avatar`] = credential.photoURL
+                            } else {
+                                update[`users/${user_id}/avatar`] = ''
+                            }
+
+                            database()
+                                .ref()
+                                .update(update)
+
+                            // let load = {
+                            //   userId: user_id,
+                            //   role: 3,
+                            //   password: this.state.password,
+                            //   email: this.state.email,
+                            //   firstName: '',
+                            //   lastName: credential.displayName ? credential.displayName : 'Client',
+                            //   address: 'Your address',
+                            //   age: '',
+                            //   avatar: credential.photoURL ? credential.photoURL : '',
+                            // }
+
+                            // const userRef = database().ref('users/')
+                            // const newUser = userRef.push()
+                            // newUser.set({...load})
+
+                            this.userId = user_id
+                            // self.setModalVisible(true)
+                            alert('Successfully created your account')
+
+                            AsyncStorage.setItem('firstBoot', '1')
+                            const {navigation} = this.props;
+                            navigation.navigate('LoginScreen');
+                            // create a new user on real-time database
+                            // let load = {
+                            //   ...this.state.user,
+                            //   currentScore: 0,
+                            //   maxScore: 0,
+                            // }
+
+                            // if (this.state.user && this.state.user.userId) {
+                            //   alert('updating the user account on database')
+                            //   let updates = {}
+                            //   updates[`users/${this.state.user.userId}/`] = {...load}
+                            //   database()
+                            //     .ref()
+                            //     .update(updates)
+                            //     .then(function () {
+                            //       //alert("Data updated successfully.");
+                            //       //   history.replace('/admin/revtones');
+                            //     })
+                            //     .catch(function (error) {
+                            //       alert('Data could not be updated.' + error)
+                            //     })
+                            // } else {
+                            //   alert('creating a user account on database')
+                            //   let userRef = database().ref(`users/`)
+                            //   let newUser = userRef.push()
+                            //   newUser.set({...load})
+                            // }
+
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        if (error.code === 'auth/email-already-in-use') {
+                            alert('This email address is already in use by another account.');
+                        }
+                        RNProgressHud.dismiss()
+                    })
+            }
+        } catch (error) {
+            alert('error2: ' + JSON.stringify(error))
             RNProgressHud.dismiss()
-            if (credential.user) {
-              const user_id = credential.user.uid
-              console.log('=================> credential: ', credential)
-              var update = {}
-              update[`users/${user_id}/userId`] = user_id
-              update[`users/${user_id}/role`] = 3
-              update[`users/${user_id}/password`] = this.state.password
-              update[`users/${user_id}/email`] = this.state.email
-              if (credential.displayName) {
-                update[`users/${user_id}/firstName`] = ''
-                update[`users/${user_id}/lastName`] = credential.displayName
-              } else {
-                update[`users/${user_id}/firstName`] = ''
-                update[`users/${user_id}/lastName`] = 'Client'
-              }
-              update[`users/${user_id}/address`] = 'Your address'
-              update[`users/${user_id}/age`] = ''
-              if (credential.photoURL) {
-                update[`users/${user_id}/avatar`] = credential.photoURL
-              } else {
-                update[`users/${user_id}/avatar`] = ''
-              }
+        }
+    }
 
-              database()
+    validateEmail = email => {
+        const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        return re.test(String(email).toLowerCase())
+    }
+
+    validateSpecialChar = password => {
+        const re = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
+        return re.test(String(password).toLowerCase())
+    }
+
+    validateNumber = password => {
+        return /\d/.test(password)
+    }
+
+    validateLetter = password => {
+        return /[A-Za-z]/g.test(password)
+    }
+
+    onChangeEmail = value => {
+        this.setState({email: value})
+        this.setState({emailValidate: this.validateEmail(value)})
+    }
+
+    onChangePassword = value => {
+        this.setState({password: value})
+        this.setState({charLengthValidate: value.length >= 6})
+        this.setState({charSpecValidate: this.validateSpecialChar(value)})
+        this.setState({charNumberValidate: this.validateNumber(value)})
+        this.setState({charLetterValidate: this.validateLetter(value)})
+        // if(value.length >= 6 &&  this.validateLetter(value)) {
+        this.setState({passwordStrength: 'easy'})
+        if (this.validateNumber(value)) {
+            this.setState({passwordStrength: 'medium'})
+            if (this.validateSpecialChar(value)) {
+                this.setState({passwordStrength: 'hard'})
+            }
+        }
+        // }
+    }
+
+    setModalVisible = visible => {
+        this.setState({modalVisible: visible})
+    }
+
+    navigateScreem() {
+        if (this.props && this.props.navigation) {
+            this.props.navigation.navigate('TermsAndCondtions')
+            this.setModalVisible(!this.state.modalVisible)
+        }
+    }
+
+    Privacy() {
+        if (this.props && this.props.navigation) {
+            this.props.navigation.navigate('PrivacyScreen')
+            this.setModalVisible(!this.state.modalVisible)
+        }
+    }
+
+    navigteToHome() {
+        try {
+            var update = {}
+            update[`users/${this.userId}/term_accepted`] = true
+            database()
                 .ref()
                 .update(update)
-              
-              // let load = {
-              //   userId: user_id,
-              //   role: 3,
-              //   password: this.state.password,
-              //   email: this.state.email,
-              //   firstName: '',
-              //   lastName: credential.displayName ? credential.displayName : 'Client',
-              //   address: 'Your address',
-              //   age: '',
-              //   avatar: credential.photoURL ? credential.photoURL : '',
-              // }
-
-              // const userRef = database().ref('users/')
-              // const newUser = userRef.push()
-              // newUser.set({...load})
-
-              this.userId = user_id
-              // self.setModalVisible(true)
-              alert('Successfully created your account')
-
-              AsyncStorage.setItem('firstBoot', '1')
-
-              // create a new user on real-time database
-              // let load = {
-              //   ...this.state.user,
-              //   currentScore: 0,
-              //   maxScore: 0,
-              // }
-
-              // if (this.state.user && this.state.user.userId) {
-              //   alert('updating the user account on database')
-              //   let updates = {}
-              //   updates[`users/${this.state.user.userId}/`] = {...load}
-              //   database()
-              //     .ref()
-              //     .update(updates)
-              //     .then(function () {
-              //       //alert("Data updated successfully.");
-              //       //   history.replace('/admin/revtones');
-              //     })
-              //     .catch(function (error) {
-              //       alert('Data could not be updated.' + error)
-              //     })
-              // } else {
-              //   alert('creating a user account on database')
-              //   let userRef = database().ref(`users/`)
-              //   let newUser = userRef.push()
-              //   newUser.set({...load})
-              // }
-
+            if (this.props && this.props.navigation) {
+                this.props.navigation.navigate('drawer')
+                this.setModalVisible(!this.state.modalVisible)
             }
-          })
-          .catch(error => {
-            console.log(error)
-            alert('error1: ' + error.message)
-            RNProgressHud.dismiss()
-          })
-      }
-    } catch (error) {
-      alert('error2: ' + JSON.stringify(error))
-      RNProgressHud.dismiss()
+        } catch (error) {
+            alert(JSON.stringify(error))
+        }
     }
-  }
 
-  validateEmail = email => {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    return re.test(String(email).toLowerCase())
-  }
-
-  validateSpecialChar = password => {
-    const re = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
-    return re.test(String(password).toLowerCase())
-  }
-
-  validateNumber = password => {
-    return /\d/.test(password)
-  }
-
-  validateLetter = password => {
-    return /[A-Za-z]/g.test(password)
-  }
-
-  onChangeEmail = value => {
-    this.setState({email: value})
-    this.setState({emailValidate: this.validateEmail(value)})
-  }
-
-  onChangePassword = value => {
-    this.setState({password: value})
-    this.setState({charLengthValidate: value.length >= 6})
-    this.setState({charSpecValidate: this.validateSpecialChar(value)})
-    this.setState({charNumberValidate: this.validateNumber(value)})
-    this.setState({charLetterValidate: this.validateLetter(value)})
-    // if(value.length >= 6 &&  this.validateLetter(value)) {
-    this.setState({passwordStrength: 'easy'})
-    if (this.validateNumber(value)) {
-      this.setState({passwordStrength: 'medium'})
-      if (this.validateSpecialChar(value)) {
-        this.setState({passwordStrength: 'hard'})
-      }
+    togglePassword() {
+        this.setState({showPassword: !this.state.showPassword})
     }
-    // }
-  }
 
-  setModalVisible = visible => {
-    this.setState({modalVisible: visible})
-  }
+    //====> Modal Method <====//
 
-  navigateScreem () {
-    if (this.props && this.props.navigation) {
-      this.props.navigation.navigate('TermsAndCondtions')
-      this.setModalVisible(!this.state.modalVisible)
+    // setModalVisible = (visible) => {
+    //     this.setState({ modalVisible: visible });
+
+    // };
+
+    //====> OnTerm Method <====//
+
+    onTerm() {
+        this.setState({modalVisible: false, showTerms: true})
+        this.props.navigation.navigate('TermsAndCondtions')
     }
-  }
 
-  Privacy () {
-    if (this.props && this.props.navigation) {
-      this.props.navigation.navigate('PrivacyScreen')
-      this.setModalVisible(!this.state.modalVisible)
+    //====> OnPrivacy Method <====//
+
+    onPrivacy() {
+        this.setState({modalVisible: false, showTerms: true})
+        this.props.navigation.navigate('PrivacyPolicy')
     }
-  }
 
-  navigteToHome () {
-    try {
-      var update = {}
-      update[`users/${this.userId}/term_accepted`] = true
-      database()
-        .ref()
-        .update(update)
-      if (this.props && this.props.navigation) {
-        this.props.navigation.navigate('drawer')
-        this.setModalVisible(!this.state.modalVisible)
-      }
-    } catch (error) {
-      alert(JSON.stringify(error))
+    //====> OnAgree Method <====//
+
+    onAgree() {
+        this.setState({modalVisible: false, showTerms: false})
+        this.signupWithEmailPassword()
+
+        // this.props.navigation.navigate('drawer')
     }
-  }
 
-  togglePassword () {
-    this.setState({showPassword: !this.state.showPassword})
-  }
+    //====> OnCancel Method <====//
 
-  //====> Modal Method <====//
+    onCancel() {
+        this.setState({modalVisible: false, showTerms: false})
+    }
 
-  // setModalVisible = (visible) => {
-  //     this.setState({ modalVisible: visible });
+    onSignUp = () => {
+        const {
+            email,
+            password,
+            emailValidate,
+            charLengthValidate,
+            charLetterValidate,
+            charNumberValidate,
+            charSpecValidate
+        } = this.state;
+        if (!email.length) {
+            Alert.alert('Please enter email');
+            return;
+        }
+        if (!emailValidate) {
+            Alert.alert('Please enter a valid email address');
+            return;
+        }
+        if (!password.length) {
+            Alert.alert('Please enter password');
+            return;
+        }
+        if (!charLengthValidate ||
+            !charLetterValidate ||
+            !charNumberValidate ||
+            !charSpecValidate) {
+            let errorTitle = 'Invalid password.';
+            let errorMessage = '';
+            if (!charLengthValidate) {
+                errorMessage = 'Please input password at least 6 characters long';
+            } else if (!charLetterValidate) {
+                errorMessage = 'Password must contain at least a letter';
+            } else if (!charNumberValidate) {
+                errorMessage = 'Password must contain at least a number';
+            } else if (!charSpecValidate) {
+                errorMessage = 'Password must contain at least a special character';
+            }
+            Alert.alert(errorTitle, errorMessage);
+            return;
+        }
+        this.setState({modalVisible: true});
+    }
 
-  // };
+    //====> Render Method <====//
 
-  //====> OnTerm Method <====//
+    render() {
+        const {modalVisible, emailValidate} = this.state
 
-  onTerm () {
-    this.setState({modalVisible: false})
-    this.props.navigation.navigate('TermsAndCondtions')
-  }
+        return (
+            <View style={styles.mainContainer}>
+                {/*====> Header View <====*/}
 
-  //====> OnPrivacy Method <====//
+                <View style={styles.headerView}>
+                    <AppHeader
+                        title={'SIGN UP'}
+                        bgColor={colors.app_header_color}
+                        leftIconPath={images.back_arrow}
+                        onLeftIconPress={() => this.props.navigation.goBack()}
+                    />
+                </View>
 
-  onPrivacy () {
-    this.setState({modalVisible: false})
-    this.props.navigation.navigate('PrivacyPolicy')
-  }
+                {/*====> Input View <====*/}
 
-  //====> OnAgree Method <====//
+                <View style={{flex: 0.91}}>
+                    <View style={styles.midView}>
+                        <AppInput
+                            placeholder={'Enter Email'}
+                            textInputColor={colors.white}
+                            placeholderTextColor={colors.placeholder_color}
+                            onChangeText={text => {
+                                this.onChangeEmail(text)
+                            }}
+                            value={this.state.email}
+                        />
+                        <View style={[styles.checkBoxContainer, {paddingVertical: wp(4)}]}>
+                            <View style={styles.checkBoxIcon}>
+                                <Image
+                                    style={styles.checkBoxIconStyle}
+                                    // source={images.ic_filter_active}
+                                    source={
+                                        emailValidate
+                                            ? images.ic_filter_active
+                                            : images.ic_filter_inactive
+                                    }
+                                />
+                            </View>
+                            <View style={styles.checkBoxText}>
+                                <Text style={styles.checkBoxTextStyle}>
+                                    Valid email
+                                </Text>
+                            </View>
+                        </View>
+                        <AppInput
+                            placeholder={'Enter Password'}
+                            textInputColor={colors.white}
+                            placeholderTextColor={colors.placeholder_color}
+                            secureEntry={this.state.showPassword}
+                            onRightIconPress={() => this.togglePassword()}
+                            rightIconPath={images.ic_eye}
+                            value={this.state.password}
+                            onChangeText={text => {
+                                this.onChangePassword(text)
+                            }}
+                        />
 
-  onAgree () {
-    this.setState({modalVisible: false})
-    this.signupWithEmailPassword()
+                        {/*====> Checks View <====*/}
 
-    // this.props.navigation.navigate('drawer')
-  }
+                        <View style={[styles.checkBoxContainer, {paddingTop: wp(4)}]}>
+                            <View style={styles.checkBoxIcon}>
+                                <Image
+                                    style={styles.checkBoxIconStyle}
+                                    // source={images.ic_filter_active}
+                                    source={
+                                        this.state.charLengthValidate
+                                            ? images.ic_filter_active
+                                            : images.ic_filter_inactive
+                                    }
+                                />
+                            </View>
+                            <View style={styles.checkBoxText}>
+                                <Text style={styles.checkBoxTextStyle}>
+                                    At least 6 characters long
+                                </Text>
+                            </View>
+                        </View>
 
-  //====> OnCancel Method <====//
+                        <Text style={styles.passwordStrength}>
+                            Password Strength: {this.state.passwordStrength}
+                        </Text>
 
-  onCancel () {
-    this.setState({modalVisible: false})
-  }
+                        <View style={styles.checkBoxContainer}>
+                            <View style={styles.checkBoxIcon}>
+                                <Image
+                                    style={styles.checkBoxIconStyle}
+                                    //   source={images.ic_filter_active}
+                                    source={
+                                        this.state.charLetterValidate
+                                            ? images.ic_filter_active
+                                            : images.ic_filter_inactive
+                                    }
+                                />
+                            </View>
+                            <View style={styles.checkBoxText}>
+                                <Text style={styles.checkBoxTextStyle}>Contains a letter</Text>
+                            </View>
+                        </View>
+                        <View style={styles.checkBoxContainer}>
+                            <View style={styles.checkBoxIcon}>
+                                <Image
+                                    style={styles.checkBoxIconStyle}
+                                    // source={images.ic_filter_active}
+                                    source={
+                                        this.state.charNumberValidate
+                                            ? images.ic_filter_active
+                                            : images.ic_filter_inactive
+                                    }
+                                />
+                            </View>
+                            <View style={styles.checkBoxText}>
+                                <Text style={styles.checkBoxTextStyle}>Contains a number</Text>
+                            </View>
+                        </View>
+                        <View style={styles.checkBoxContainer}>
+                            <View style={styles.checkBoxIcon}>
+                                <Image
+                                    //   style={styles.checkBoxIconStyleError}
+                                    style={styles.checkBoxIconStyle}
+                                    // source={images.ic_error}
+                                    source={
+                                        this.state.charSpecValidate
+                                            ? images.ic_filter_active
+                                            : images.ic_filter_inactive
+                                    }
+                                />
+                            </View>
+                            <View style={styles.checkBoxText}>
+                                <Text style={styles.checkBoxTextStyle}>
+                                    Contains a special character
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
 
-  //====> Render Method <====//
+                    {/*====> Button View <====*/}
 
-  render () {
-    const {modalVisible} = this.state
+                    <View style={styles.buttonView}>
+                        <Button
+                            title={'Start'}
+                            onPress={this.onSignUp}
+                        />
+                    </View>
 
-    return (
-      <View style={styles.mainContainer}>
-        {/*====> Header View <====*/}
+                    {/*====> Login Button View <====*/}
 
-        <View style={styles.headerView}>
-          <AppHeader
-            title={'SIGN UP'}
-            bgColor={colors.app_header_color}
-            leftIconPath={images.back_arrow}
-            onLeftIconPress={() => this.props.navigation.goBack()}
-          />
-        </View>
+                    <View style={styles.lowerView}>
+                        <TouchableOpacity
+                            onPress={() => this.props.navigation.navigate('LoginScreen')}>
+                            <Text
+                                style={[
+                                    styles.textStyle,
+                                    {
+                                        color: colors.white,
+                                        marginTop: wp(2),
+                                    },
+                                ]}>
+                                Already have an account?
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => this.props.navigation.navigate('LoginScreen')}>
+                            <Text
+                                style={[
+                                    styles.textStyle,
+                                    {
+                                        textDecorationLine: 'underline',
+                                        color: colors.app_red,
+                                        marginTop: wp(2),
+                                    },
+                                ]}>
+                                Login here
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
 
-        {/*====> Input View <====*/}
+                    {/*====> Modal <====*/}
 
-        <View style={{flex: 0.91}}>
-          <View style={styles.midView}>
-            <AppInput
-              placeholder={'Enter Email'}
-              textInputColor={colors.white}
-              placeholderTextColor={colors.placeholder_color}
-              onChangeText={text => {
-                this.onChangeEmail(text)
-              }}
-              value={this.state.email}
-            />
+                    <Modal
+                        animationType='slide'
+                        transparent={true}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            this.setModalVisible(!modalVisible)
+                        }}>
+                        {/*====> SignUp Modal <====*/}
 
-            <AppInput
-              placeholder={'Enter Password'}
-              textInputColor={colors.white}
-              placeholderTextColor={colors.placeholder_color}
-              secureEntry={this.state.showPassword}
-              onRightIconPress={() => this.togglePassword()}
-              rightIconPath={images.ic_eye}
-              value={this.state.password}
-              onChangeText={text => {
-                this.onChangePassword(text)
-              }}
-            />
-
-            {/*====> Checks View <====*/}
-
-            <View style={[styles.checkBoxContainer, {paddingTop: wp(4)}]}>
-              <View style={styles.checkBoxIcon}>
-                <Image
-                  style={styles.checkBoxIconStyle}
-                  // source={images.ic_filter_active}
-                  source={
-                    this.state.charLengthValidate
-                      ? images.ic_filter_active
-                      : images.ic_filter_inactive
-                  }
-                />
-              </View>
-              <View style={styles.checkBoxText}>
-                <Text style={styles.checkBoxTextStyle}>
-                  At least 6 characters long
-                </Text>
-              </View>
+                        <SignUpModel
+                            onPressCancel={() => this.onCancel()}
+                            onPressTerm={() => this.onTerm()}
+                            onPressPrivacy={() => this.onPrivacy()}
+                            onPressOkay={() => {
+                                this.onAgree()
+                            }}
+                        />
+                    </Modal>
+                </View>
             </View>
-
-            <Text style={styles.passwordStrength}>
-              Password Strength: {this.state.passwordStrength}
-            </Text>
-
-            <View style={styles.checkBoxContainer}>
-              <View style={styles.checkBoxIcon}>
-                <Image
-                  style={styles.checkBoxIconStyle}
-                  //   source={images.ic_filter_active}
-                  source={
-                    this.state.charLetterValidate
-                      ? images.ic_filter_active
-                      : images.ic_filter_inactive
-                  }
-                />
-              </View>
-              <View style={styles.checkBoxText}>
-                <Text style={styles.checkBoxTextStyle}>Contains a letter</Text>
-              </View>
-            </View>
-            <View style={styles.checkBoxContainer}>
-              <View style={styles.checkBoxIcon}>
-                <Image
-                  style={styles.checkBoxIconStyle}
-                  // source={images.ic_filter_active}
-                  source={
-                    this.state.charNumberValidate
-                      ? images.ic_filter_active
-                      : images.ic_filter_inactive
-                  }
-                />
-              </View>
-              <View style={styles.checkBoxText}>
-                <Text style={styles.checkBoxTextStyle}>Contains a number</Text>
-              </View>
-            </View>
-            <View style={styles.checkBoxContainer}>
-              <View style={styles.checkBoxIcon}>
-                <Image
-                  //   style={styles.checkBoxIconStyleError}
-                  style={styles.checkBoxIconStyle}
-                  // source={images.ic_error}
-                  source={
-                    this.state.charSpecValidate
-                      ? images.ic_filter_active
-                      : images.ic_filter_inactive
-                  }
-                />
-              </View>
-              <View style={styles.checkBoxText}>
-                <Text style={styles.checkBoxTextStyle}>
-                  Contains a special character
-                </Text>
-              </View>
-            </View>
-          </View>
-
-          {/*====> Button View <====*/}
-
-          <View style={styles.buttonView}>
-            <Button
-              title={'Start'}
-              onPress={() => this.setModalVisible(true)}
-            />
-          </View>
-
-          {/*====> Login Button View <====*/}
-
-          <View style={styles.lowerView}>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('LoginScreen')}>
-              <Text
-                style={[
-                  styles.textStyle,
-                  {
-                    color: colors.white,
-                    marginTop: wp(2),
-                  },
-                ]}>
-                Already have an account?
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('LoginScreen')}>
-              <Text
-                style={[
-                  styles.textStyle,
-                  {
-                    textDecorationLine: 'underline',
-                    color: colors.app_red,
-                    marginTop: wp(2),
-                  },
-                ]}>
-                Login here
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/*====> Modal <====*/}
-
-          <Modal
-            animationType='slide'
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              this.setModalVisible(!modalVisible)
-            }}>
-            {/*====> SignUp Modal <====*/}
-
-            <SignUpModel
-              onPressCancel={() => this.onCancel()}
-              onPressTerm={() => this.onTerm()}
-              onPressPrivacy={() => this.onPrivacy()}
-              onPressOkay={() => {
-                this.onAgree()
-              }}
-            />
-          </Modal>
-        </View>
-      </View>
-    )
-  }
+        )
+    }
 }
 
 export default SignUpScreen

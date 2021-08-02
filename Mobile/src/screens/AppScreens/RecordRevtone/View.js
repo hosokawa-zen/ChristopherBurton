@@ -8,7 +8,7 @@ import React from 'react'
 import {View, Text, Image, FlatList, TouchableOpacity} from 'react-native'
 import {Buffer} from 'buffer'
 // import Permissions from 'react-native-permissions'
-import {AudioPlayer} from 'react-native-audio-player-recorder'
+import {AudioPlayer} from 'react-native-audio-recorder-player'
 import AudioRecord from 'react-native-audio-record'
 import RNFS from 'react-native-fs'
 
@@ -249,7 +249,7 @@ class RecordRevtone extends React.Component {
     })
   }
 
-  
+
 
   onRemove = item => {
     let audios = this.state.audiosArray

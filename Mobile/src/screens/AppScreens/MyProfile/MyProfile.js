@@ -17,7 +17,7 @@ import {
 import React from 'react'
 import auth from '@react-native-firebase/auth'
 import database from '@react-native-firebase/database'
-import {AudioPlayer} from 'react-native-audio-player-recorder'
+import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 
 
 //====> Local files <====//
@@ -34,6 +34,7 @@ export default class MyProfile extends React.Component {
   constructor (props) {
     super(props)
     this.userId = ''
+    this.audioPlayer = new AudioRecorderPlayer();
 
     this.state = {
       paused: false,
@@ -287,41 +288,49 @@ export default class MyProfile extends React.Component {
   }
 
   initAudioPlayer = () => {
-    AudioPlayer.onFinished = () => {
-      console.log('finished playback')
-      this.setState({paused: true, loaded: false, playing: false})
-    }
-    AudioPlayer.setFinishedSubscription()
-
-    AudioPlayer.onProgress = data => {
-      console.log('progress', data)
-    }
-    AudioPlayer.setProgressSubscription()
+    // AudioPlayer.onFinished = () => {
+    //   console.log('finished playback')
+    //   this.setState({paused: true, loaded: false, playing: false})
+    // }
+    // AudioPlayer.setFinishedSubscription()
+    //
+    // AudioPlayer.onProgress = data => {
+    //   console.log('progress', data)
+    // }
+    // AudioPlayer.setProgressSubscription()
   }
 
-  play = audioPath => {
+  play = async (audioPath) => {
     if (this.state.loaded) {
-      AudioPlayer.unpause()
+      await this.audioPlayer.pausePlayer();
       this.setState({paused: false, playing: true})
     } else {
-      AudioPlayer.playWithUrl(audioPath)
+      await this.audioPlayer.startPlayer(audioPath);
+      this.audioPlayer.addPlayBackListener((e) => {
+       console.log({
+          currentPositionSec: e.currentPosition,
+          currentDurationSec: e.duration,
+          playTime: this.audioPlayer.mmssss(Math.floor(e.currentPosition)),
+          duration: this.audioPlayer.mmssss(Math.floor(e.duration)),
+        });
+      });
       this.setState({paused: false, loaded: true, playing: true})
     }
   }
 
-  pause = () => {
-    AudioPlayer.pause()
+  pause = async () => {
+    await this.audioPlayer.pausePlayer();
     this.setState({paused: true, playing: false})
   }
 
-  playAudio = (item) => {
-    if (this.state.playing) this.pause()
-    else this.play(item.audioPath)
+  playAudio = async (item) => {
+    if (this.state.playing) await this.pause()
+    else await this.play(item.audioPath)
   }
 
-  onBack = () => {
+  onBack = async () => {
     this.props.navigation.goBack()
-    if (this.state.playing) AudioPlayer.pause()
+    if (this.state.playing)  await this.audioPlayer.pausePlayer();
     this.setState({paused: true, playing: false})
   }
 
@@ -404,7 +413,8 @@ export default class MyProfile extends React.Component {
   //====> Render Method <====//
 
   render () {
-    const {user, avatar, name, email} = this.state
+    const {user, avatar, name, email} = this.state;
+    console.log('user', user);
     return (
       <View style={styles.mainContainer}>
         {/*====> Header View <====*/}
@@ -437,7 +447,7 @@ export default class MyProfile extends React.Component {
               />
               <Text style={styles.name}>
                 {user
-                  ? `${user.firstName} ${user.lastName}, ${user.age}`
+                  ? `${user.firstName} ${user.lastName}` + ( user.age?`, ${user.age}`:'')
                   : 'Hi, Client'}
               </Text>
               <Text style={styles.location}>{user && user.address}</Text>
@@ -447,12 +457,17 @@ export default class MyProfile extends React.Component {
 
             <View style={styles.socialAccountView}>
               <Text style={styles.headingText}>Social Media Accounts</Text>
-              <FlatList
-                style={{marginTop: 10}}
-                data={this.state.socialAccount}
-                renderItem={({item}) => this.social_account(item)}
-                keyExtractor={item => item.id}
-              />
+              {
+                this.state.socialAccount.length>0?
+                  <FlatList
+                    style={{marginTop: 10}}
+                    data={this.state.socialAccount}
+                    renderItem={({item}) => this.social_account(item)}
+                    keyExtractor={item => item.id}
+                  />
+                    :
+                    <Text style={styles.noText}>No Social Accounts Added</Text>
+              }
             </View>
 
             {/*====> Favorites FlatList View <====*/}
@@ -460,12 +475,17 @@ export default class MyProfile extends React.Component {
             <View style={styles.socialAccountView}>
               <Text style={styles.headingText}>Favorites</Text>
               <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
-              <FlatList
-                style={{marginTop: 10}}
-                data={this.state.favorites}
-                renderItem={({item}) => this.favorite_ringtone(item)}
-                keyExtractor={item => item.id}
-              />
+                {
+                  this.state.favorites.length > 0 ?
+                    <FlatList
+                      style={{marginTop: 10, height:Platform.OS === 'ios' ? hp(34) : hp(36)}}
+                      data={this.state.favorites}
+                      renderItem={({item}) => this.favorite_ringtone(item)}
+                      keyExtractor={item => item.id}
+                    />
+                      :
+                      <Text style={styles.noText}>No Favourites Added</Text>
+                }
               </ScrollView>
             </View>
 

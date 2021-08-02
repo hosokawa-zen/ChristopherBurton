@@ -70,19 +70,19 @@ class TermsAndCondtions extends React.Component {
 
                 {/*====> Button View <====*/}
 
-                <View style={styles.buttonContainer}>
-                    <Button
-                        height={hp(7)}
-                        width={'100%'}
-                        style={styles.buttonStyles}
-                        title={'Agree and Continue'}
-                        bgColor={colors.app_button_color}
-                        titleColor={colors.dark_red}
-                        titleStyle={[styles.titleStyles]}
-                        // onPress={() => this.props.navigation.navigate('Payment', {key: this.props.route.params.key, price: this.props.route.params.price, count: this.props.route.params.count, deal: this.props.route.params.deal})}
-                    />
+                {/*<View style={styles.buttonContainer}>*/}
+                {/*    <Button*/}
+                {/*        height={hp(7)}*/}
+                {/*        width={'100%'}*/}
+                {/*        style={styles.buttonStyles}*/}
+                {/*        title={'Agree and Continue'}*/}
+                {/*        bgColor={colors.app_button_color}*/}
+                {/*        titleColor={colors.dark_red}*/}
+                {/*        titleStyle={[styles.titleStyles]}*/}
+                {/*        // onPress={() => this.props.navigation.navigate('Payment', {key: this.props.route.params.key, price: this.props.route.params.price, count: this.props.route.params.count, deal: this.props.route.params.deal})}*/}
+                {/*    />*/}
 
-                </View>
+                {/*</View>*/}
             </View>
         )
     }

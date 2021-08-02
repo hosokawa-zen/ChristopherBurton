@@ -25,10 +25,10 @@ const styles= StyleSheet.create({
         justifyContent:'center',
     },
     image:{
-        height:'70%',
-        width:'70%',
+        height:140,
+        width:140,
         resizeMode:'contain',
-        borderRadius: wp(12)
+        borderRadius: 70
     },
 
     // userImageContainer: {

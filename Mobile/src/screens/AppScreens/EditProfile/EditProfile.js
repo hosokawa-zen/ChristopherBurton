@@ -17,7 +17,7 @@ import database from '@react-native-firebase/database'
 import storage from '@react-native-firebase/storage'
 import ImageResizer from 'react-native-image-resizer'
 import {launchImageLibrary} from 'react-native-image-picker'
-import {AudioPlayer} from 'react-native-audio-player-recorder'
+import AudioPlayer from 'react-native-audio-recorder-player'
 
 //====> Local files <====//
 
@@ -110,7 +110,7 @@ export default class EditProfile extends React.Component {
           id: 2,
           imageSocial: images.icn_play_small,
           title: 'Notifications',
-          dropDownTitle: 'Select a ringtone',
+          dropDownTitle: "Select a ringtone",
           number: '0',
         },
       ],
@@ -653,6 +653,7 @@ export default class EditProfile extends React.Component {
                   rightIconPath={images.ic_maker}
                   placeholderTextColor={colors.grey}
                   textInputColor={colors.white}
+                  keyboardType={Platform.OS === 'ios' ? 'ascii-capable' : 'visible-password'}
                   paddingRight={0.01}
                   marginLeft={8}
                   borderRadius={0.01}

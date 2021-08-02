@@ -69,7 +69,6 @@ const styles= StyleSheet.create({
         borderColor: colors.white
     },
     socialAccountView:{
-        height:Platform.OS === 'ios' ? hp(34) : hp(36),
         width:wp(94),
         alignSelf:'center',
         marginTop: 15,
@@ -82,7 +81,11 @@ const styles= StyleSheet.create({
         marginTop: 15,
         // backgroundColor: 'red',
     },
-
+    noText: {
+        marginTop: 12,
+        textAlign: 'center',
+        color: 'white'
+    }
 
 
 

@@ -12,7 +12,7 @@ import React from 'react'
 import auth from '@react-native-firebase/auth'
 import database from '@react-native-firebase/database'
 
-import {AudioPlayer} from 'react-native-audio-player-recorder'
+import {AudioPlayer} from 'react-native-audio-recorder-player'
 
 //====> Local files <====//
 

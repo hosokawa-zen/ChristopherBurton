@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     },
     container:
     {
-        flex: 0.8,
+        flex: 0.9,
         paddingHorizontal: wp(5),
         borderTopColor: colors.white,
         // borderTopWidth: wp(0.2),

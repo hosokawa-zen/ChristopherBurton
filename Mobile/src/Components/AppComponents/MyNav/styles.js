@@ -81,7 +81,7 @@ let Styles = {
         width: 20,
         height: 20,
         tintColor: colors.deep_grey,
-        resizeMode: "contain",
+        resizeMode: 'contain',
     }
     ,
     drawerItemStyles:
@@ -96,16 +96,16 @@ let Styles = {
         borderRadius: wp(1)
 
     },
-    drawerItemStylesLogin: {
-        height: Platform.OS === 'ios' ? wp(12) : wp(11),
-        // width:wp(100),
-        marginVertical: wp(0.5),
-        backgroundColor: colors.white,
-        justifyContent: 'center',
-        borderColor: colors.bright_red,
-        borderWidth: 1,
-        borderRadius: wp(10)
-    }
+    // drawerItemStylesLogin: {
+    //     height: Platform.OS === 'ios' ? wp(12) : wp(11),
+    //     // width:wp(100),
+    //     marginVertical: wp(0.5),
+    //     backgroundColor: colors.white,
+    //     justifyContent: 'center',
+    //     borderColor: colors.bright_red,
+    //     borderWidth: 1,
+    //     borderRadius: wp(10)
+    // }
 
 };
 export default Styles;

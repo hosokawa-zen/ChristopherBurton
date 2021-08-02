@@ -59,6 +59,7 @@ class AppInput extends React.Component {
                     onContentSizeChange={this.props.onContentSizeChange}
                     onEndEditing={this.props.onEndEditing}
                     keyboardType={this.props.keyboardType}
+                    textContentType={this.props.textContentType}
                 />
                 {this.props.rightIconPath !== undefined &&
                 <View style={styles.rightImageViewStyle}>

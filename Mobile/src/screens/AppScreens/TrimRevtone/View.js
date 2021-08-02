@@ -23,7 +23,7 @@ const {decode, encode} = require('base64-arraybuffer')
 const toWav = require('audiobuffer-to-wav')
 import createBuffer from 'audio-buffer-from'
 import util from 'audio-buffer-utils'
-import {AudioPlayer} from 'react-native-audio-player-recorder'
+import {AudioPlayer} from 'react-native-audio-recorder-player'
 
 // import format from 'audio-format';
 

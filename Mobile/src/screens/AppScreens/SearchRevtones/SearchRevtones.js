@@ -4,7 +4,7 @@ import {View, Text, FlatList, Modal} from 'react-native'
 import React from 'react'
 import database from '@react-native-firebase/database'
 import storage from '@react-native-firebase/storage'
-import {AudioPlayer} from 'react-native-audio-player-recorder'
+import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 
 //====> Local files <====//
 
@@ -21,6 +21,8 @@ export default class SearchRevtones extends React.Component {
     super(props)
     this.category = null
     this.sortIndex = 0
+    this.audioPlayer = new AudioRecorderPlayer();
+
     this.state = {
       revtons: [],
       audioFile: '',
@@ -129,34 +131,42 @@ export default class SearchRevtones extends React.Component {
   }
 
   initAudioPlayer = () => {
-    AudioPlayer.onFinished = () => {
-      console.log('finished playback')
-      this.setState({paused: true, loaded: false, playing: false})
-    }
-    AudioPlayer.setFinishedSubscription()
-
-    AudioPlayer.onProgress = data => {
-      console.log('progress', data)
-    }
-    AudioPlayer.setProgressSubscription()
+    // AudioPlayer.onFinished = () => {
+    //   console.log('finished playback')
+    //   this.setState({paused: true, loaded: false, playing: false})
+    // }
+    // AudioPlayer.setFinishedSubscription()
+    //
+    // AudioPlayer.onProgress = data => {
+    //   console.log('progress', data)
+    // }
+    // AudioPlayer.setProgressSubscription()
   }
 
-  play = audioPath => {
+  play = async (audioPath) => {
     if (this.state.loaded) {
-      AudioPlayer.unpause()
+      await this.audioPlayer.pausePlayer();
       this.setState({paused: false, playing: true})
     } else {
-      AudioPlayer.playWithUrl(audioPath)
+      await this.audioPlayer.startPlayer(audioPath);
+      this.audioPlayer.addPlayBackListener((e) => {
+        console.log({
+          currentPositionSec: e.currentPosition,
+          currentDurationSec: e.duration,
+          playTime: this.audioPlayer.mmssss(Math.floor(e.currentPosition)),
+          duration: this.audioPlayer.mmssss(Math.floor(e.duration)),
+        });
+      });
       this.setState({paused: false, loaded: true, playing: true})
     }
   }
 
-  pause = () => {
-    AudioPlayer.pause()
+  pause = async () => {
+    await this.audioPlayer.pausePlayer();
     this.setState({paused: true, playing: false})
   }
 
-  playAudio = (paused, item) => {
+  playAudio = async (paused, item) => {
     let load = {...item, playCount: item.playCount + 1}
     let updates = {}
     updates[`revton/${item.id}`] = {...load}
@@ -170,8 +180,8 @@ export default class SearchRevtones extends React.Component {
       .catch(function (error) {
         alert('Data could not be updated.' + error)
       })
-    if (this.state.playing) this.pause()
-    else this.play(item.audio)
+    if (this.state.playing) await this.pause()
+    else await this.play(item.audio)
   }
 
   filter = items => {
