@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "760785629906",
+    "firebase_url": "https://revtones-9775d-default-rtdb.firebaseio.com",
+    "project_id": "revtones-9775d",
+    "storage_bucket": "revtones-9775d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760785629906:android:9c838cc51736b5dea7730b",
+        "android_client_info": {
+          "package_name": "com.christopher_burton"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760785629906-b402m10s4ec4ngrp75kglc8ffsr6bk3c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.christopher_burton",
+            "certificate_hash": "576389c4330cf8863d772bc7e10ca3f47b08e01a"
+          }
+        },
+        {
+          "client_id": "760785629906-aj6u1q5tgljte92u0lnvtl2u49j8jq96.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSz_hlYmlkTcJWEhY5iLYO8WOPI5r0UXo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760785629906-aj6u1q5tgljte92u0lnvtl2u49j8jq96.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
