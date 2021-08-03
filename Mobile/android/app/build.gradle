@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.christopher_burton"
+        applicationId "com.brainyapps.revtones"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

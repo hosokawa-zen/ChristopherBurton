@@ -8,7 +8,7 @@ import React from 'react'
 import {View, Text, Image, FlatList, TouchableOpacity} from 'react-native'
 import {Buffer} from 'buffer'
 // import Permissions from 'react-native-permissions'
-import {AudioPlayer} from 'react-native-audio-recorder-player'
+import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 import AudioRecord from 'react-native-audio-record'
 import RNFS from 'react-native-fs'
 
@@ -31,6 +31,7 @@ class RecordRevtone extends React.Component {
     this.sound = null
     this.audioPath = ''
     this.audioName = ''
+    this.audioPlayer = new AudioRecorderPlayer();
     this.state = {
       audioFile: '',
       recording: false,
@@ -189,42 +190,43 @@ class RecordRevtone extends React.Component {
   }
 
   initAudioPlayer = () => {
-    AudioPlayer.onFinished = () => {
-      console.log('finished playback')
-      this.setState({paused: true, loaded: false, playing: false})
-    }
-    AudioPlayer.setFinishedSubscription()
-
-    AudioPlayer.onProgress = data => {
-      console.log('progress', data)
-    }
-    AudioPlayer.setProgressSubscription()
   }
 
-  play = audioPath => {
+  play = async audioPath => {
     if (this.state.loaded) {
-      AudioPlayer.unpause()
+      await this.audioPlayer.resumePlayer();
       this.setState({paused: false, playing: true})
     } else {
-      AudioPlayer.playWithUrl(audioPath)
+      await this.audioPlayer.startPlayer(audioPath);
+      this.audioPlayer.addPlayBackListener((e) => {
+        console.log({
+          currentPositionSec: e.currentPosition,
+          currentDurationSec: e.duration,
+          playTime: this.audioPlayer.mmssss(Math.floor(e.currentPosition)),
+          duration: this.audioPlayer.mmssss(Math.floor(e.duration)),
+        });
+        if(e.currentPosition === e.duration){
+          this.setState({paused: true, loaded: false, playing: false});
+        }
+      });
       this.setState({paused: false, loaded: true, playing: true})
     }
   }
 
-  pause = () => {
-    AudioPlayer.pause()
+  pause = async () => {
+    await this.audioPlayer.pausePlayer();
     this.setState({paused: true, playing: false})
   }
 
-  stop = () => {
-    AudioPlay.stop()
+  stop = async () => {
+    await this.audioPlayer.stopPlayer();
     this.setState({paused: true, playing: false})
   }
 
-  playAudio = (paused, item) => {
+  playAudio = async (paused, item) => {
     console.log(item)
-    if (this.state.playing) this.pause()
-    else this.play(item.path)
+    if (this.state.playing) await this.pause()
+    else await this.play(item.path)
   }
 
   handleRecord = () => {

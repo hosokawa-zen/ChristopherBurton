@@ -30,6 +30,7 @@ import AppHeader from '../../../Components/AppHeader'
 import images from '../../../../assets/images'
 import colors from '../../../../assets/colors'
 import styles from './style'
+import {openGotoSocialApp, socials} from "../../../socials";
 
 export default class CarProfile extends React.Component {
   constructor (props) {
@@ -70,7 +71,8 @@ export default class CarProfile extends React.Component {
         user: null,
         avatar: '',
         revton: null,
-        favorites: '',
+        favorites: [],
+        mySocials: [],
         me: null,
       })
   }
@@ -101,18 +103,21 @@ export default class CarProfile extends React.Component {
 
       this.getUser(rev)
 
-      let ringtones = []
-      rev.audios.forEach((a, i) => {
-        let ringtone = {
-          id: Math.floor(Math.random() * 100000000),
-          title: a.name,
-          audioPath: a.path,
-          revInfo: rev.carMake + ' ' + rev.carModel,
-        }
-        ringtones.push(ringtone)
-      })
+      console.log('rev', rev);
+      if(rev.audios){
+        let ringtones = []
+        rev.audios.forEach((a, i) => {
+          let ringtone = {
+            id: Math.floor(Math.random() * 100000000),
+            title: a.name,
+            audioPath: a.path,
+            revInfo: rev.carMake + ' ' + rev.carModel,
+          }
+          ringtones.push(ringtone)
+        })
 
-      this.listRingtones = ringtones
+        this.listRingtones = ringtones
+      }
 
       this.initAudioPlayer()
     }
@@ -147,7 +152,8 @@ export default class CarProfile extends React.Component {
           if (user) {
             this.setState({
               me: user,
-              favorites: user.favorites ? user.favorites : '',
+              favorites: user.favorites??[],
+              mySocials: user.mySocials??[]
             })
           }
         } else {
@@ -183,21 +189,11 @@ export default class CarProfile extends React.Component {
   }
 
   initAudioPlayer = () => {
-    // AudioPlayer.onFinished = () => {
-    //   console.log('finished playback')
-    //   this.setState({paused: true, loaded: false, playing: false})
-    // }
-    // AudioPlayer.setFinishedSubscription()
-    //
-    // AudioPlayer.onProgress = data => {
-    //   console.log('progress', data)
-    // }
-    // AudioPlayer.setProgressSubscription()
   }
 
   play = async (audioPath) => {
     if (this.state.loaded) {
-      await this.audioPlayer.pausePlayer();
+      await this.audioPlayer.resumePlayer();
       this.setState({paused: false, playing: true})
     } else {
       await this.audioPlayer.startPlayer(audioPath);
@@ -208,6 +204,9 @@ export default class CarProfile extends React.Component {
           playTime: this.audioPlayer.mmssss(Math.floor(e.currentPosition)),
           duration: this.audioPlayer.mmssss(Math.floor(e.duration)),
         });
+        if(e.currentPosition === e.duration){
+          this.setState({paused: true, loaded: false, playing: false});
+        }
       });
       this.setState({paused: false, loaded: true, playing: true})
     }
@@ -239,9 +238,9 @@ export default class CarProfile extends React.Component {
   }
 
   onBack = async () => {
-    this.props.navigation.goBack()
     if (this.state.playing) await this.audioPlayer.pausePlayer();
     this.setState({paused: true, playing: false})
+    this.props.navigation.goBack()
   }
 
   setModalVisible = visible => {
@@ -297,7 +296,7 @@ export default class CarProfile extends React.Component {
     let isMyFavorite = false
     if (this.state.favorites) {
       this.state.favorites.forEach(fav => {
-        if (fav.audioPath == item.audioPath) {
+        if (fav.audioPath === item.audioPath && fav.title === item.title) {
           isMyFavorite = true
         }
       })
@@ -328,12 +327,15 @@ export default class CarProfile extends React.Component {
   //====> List Ringtone Method <====//
 
   list_ringtones (item) {
+    const is_favorite = this.state.favorites.find(f=>(f.audioPath === item.audioPath && f.title === item.title));
+    console.log('is_favorite', is_favorite);
     return (
       <CarProfileComponent
         title={item.title}
         //onPress={() => this.setModalVisible(true)}
         onDownloadPress={() => this.onDownloadPress(item)}
         onPlay={paused => this.playAudio(paused, item)}
+        is_favorite={is_favorite}
         onFlagPress={() => this.onFlagPress(item)}
       />
     )
@@ -494,24 +496,22 @@ export default class CarProfile extends React.Component {
             <Text style={styles.infoText}>{revton && revton.notes}</Text>
 
             <View style={styles.iconsView}>
-              <TouchableOpacity>
-                <Image
-                  style={styles.iconSocial}
-                  source={images.icn_facebook_white}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image
-                  style={styles.iconSocial}
-                  source={images.icn_instagram_white}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Image
-                  style={styles.iconSocial}
-                  source={images.icn_snapchat_white}
-                />
-              </TouchableOpacity>
+              {
+                this.state.mySocials.map(i => {
+                  const social = socials.find(s => s.id === i);
+                  if(social){
+                    return (
+                        <TouchableOpacity onPress={() => openGotoSocialApp(i)}>
+                          <Image
+                              style={styles.iconSocial}
+                              source={social.imageSocial}
+                          />
+                        </TouchableOpacity>
+                    )
+                  }
+                  return null;
+                })
+              }
             </View>
             <View style={{alignItems: 'center', marginTop: '4%'}}>
               <Button

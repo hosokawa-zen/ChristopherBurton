@@ -27,6 +27,7 @@ import RecordRevComponent from '../../../Components/AppComponents/RecordRevCompo
 import AppHeader from '../../../Components/AppHeader'
 import images from '../../../../assets/images'
 import styles from './style'
+import {openGotoSocialApp, socials} from "../../../socials";
 
 export default class MyProfile extends React.Component {
   //====> Constructor files <====//
@@ -47,42 +48,13 @@ export default class MyProfile extends React.Component {
       email: '',
       myRevtones: [],
       myRevtoneNames: [],
+      mySocials: [],
       myRingtone: null,
       myNotification: null,
 
-      //====> Social Account Array <====//
-
-      socialAccount: [
-        {
-          id: 1,
-          imageSocial: images.icn_facebook_blue,
-          title: 'Facebook',
-        },
-        {
-          id: 2,
-          imageSocial: images.icn_Instagram,
-          title: 'Instagram',
-        },
-        {
-          id: 3,
-          imageSocial: images.icn_youtube,
-          title: 'Youtube',
-        },
-        {
-          id: 4,
-          imageSocial: images.icn_twitter,
-          title: 'Twitter',
-        },
-      ],
-
       //====> Favorites Array <====//
 
-      favorites: [
-        {
-          id: 1,
-          title: 'Add a revtone',
-        },
-      ],
+      favorites: [],
 
       //====> RingTones Array <====//
 
@@ -207,17 +179,18 @@ export default class MyProfile extends React.Component {
               user = child.val()
             }
           })
+          console.log('user info', uid, user);
           if (user) {
             const avatar = user.avatar ? user.avatar : ''
             const firstName = user.firstName ? user.firstName : ''
             const lastName = user.lastName ? user.lastName : ''
             const age = user.email ? user.age : ''
             const address = user.address ? user.address : ''
-            const favorites = user.favorites ? user.favorites : ''
-            const myRingtone = user.myRingtone ? user.myRingtone : ''
-            const myNotification = user.myNotification
-              ? user.myNotification
-              : ''
+            const favorites = user.favorites??[]
+            const mySocials = user.mySocials??[]
+            const myRingtone = user.myRingtone??[]
+            const myNotification = user.myNotification??[]
+
             let scores = this.getRevtoneScores(user)
 
             this.loadRevtones()
@@ -227,6 +200,7 @@ export default class MyProfile extends React.Component {
               avatar,
               scores,
               favorites,
+              mySocials,
               myRingtone,
               myNotification,
             })
@@ -269,12 +243,6 @@ export default class MyProfile extends React.Component {
     return names
   }
 
-  onSelectRevtone = (index, value) => {
-    // alert(index)
-    let selectedRingtone = this.state.myRevtones[index]
-    this.setState({selectedRingtone})
-  }
-
   getDefaultRevtoneButtonText = item => {
     if (item.title == 'Ringtones') {
       return this.state.myRingtone
@@ -302,7 +270,7 @@ export default class MyProfile extends React.Component {
 
   play = async (audioPath) => {
     if (this.state.loaded) {
-      await this.audioPlayer.pausePlayer();
+      await this.audioPlayer.resumePlayer();
       this.setState({paused: false, playing: true})
     } else {
       await this.audioPlayer.startPlayer(audioPath);
@@ -313,6 +281,9 @@ export default class MyProfile extends React.Component {
           playTime: this.audioPlayer.mmssss(Math.floor(e.currentPosition)),
           duration: this.audioPlayer.mmssss(Math.floor(e.duration)),
         });
+        if(e.currentPosition === e.duration){
+          this.setState({paused: true, loaded: false, playing: false});
+        }
       });
       this.setState({paused: false, loaded: true, playing: true})
     }
@@ -334,29 +305,31 @@ export default class MyProfile extends React.Component {
     this.setState({paused: true, playing: false})
   }
 
-  onSocialImagePress = item => {
-    if (item.imageSocial == 84) {
-      if (item.title == 'Ringtones' && this.state.myRingtone != '') {
-        this.playAudio(this.state.myRingtone)
+  onSocialImagePress = async item => {
+    if (item.imageSocial === 84) {
+      if (item.title === 'Ringtones' && this.state.myRingtone !== '') {
+        await this.playAudio(this.state.myRingtone)
       } else if (
-        item.title == 'Notifications' &&
-        this.state.myNotification != ''
+        item.title === 'Notifications' &&
+        this.state.myNotification !== ''
       ) {
-        this.playAudio(this.state.myNotification)
+        await this.playAudio(this.state.myNotification)
       }
     }
   }
 
   //====> Social Account Method <====//
 
-  social_account = item => {
+  social_account = social_id => {
+    const item = socials.find(s => s.id === social_id);
+    if(!item) return null;
     return (
       <SocialAccountComponent
         title={item.title}
         imageSocial={item.imageSocial}
         iconMedia={true}
         removeBtn={false}
-        // onPress={() => this.props.navigation.navigate('')}
+        onSocialImagePress={() => openGotoSocialApp(social_id)}
       />
     )
   }
@@ -366,7 +339,7 @@ export default class MyProfile extends React.Component {
   favorite_ringtone = item => {
     return (
       <SocialAccountComponent
-        title={item.title + ' ' + item.revInfo}
+        title={item.title + ' ' + (item.revInfo??'')}
         // imageSocial={item.imageSocial}
         iconMedia={false}
         removeBtn={false}
@@ -386,13 +359,9 @@ export default class MyProfile extends React.Component {
         // dropDownTitle={item.dropDownTitle}
         iconMedia={true}
         removeBtn={false}
-        dropDown={true}
-        dropDownMusic={false}
-        dropdownItems={this.state.myRevtoneNames}
-        defaultRevtoneButtonText={this.getDefaultRevtoneButtonText(item)}
-        onSelectRevtone={(index, value) => this.onSelectRevtone(index, value)}
+        shwoRightText={true}
+        rightText={this.getDefaultRevtoneButtonText(item)}
         onSocialImagePress={() => this.onSocialImagePress(item)}
-        // onPress={() => this.props.navigation.navigate('')}
       />
     )
   }
@@ -458,10 +427,10 @@ export default class MyProfile extends React.Component {
             <View style={styles.socialAccountView}>
               <Text style={styles.headingText}>Social Media Accounts</Text>
               {
-                this.state.socialAccount.length>0?
+                this.state.mySocials.length>0?
                   <FlatList
                     style={{marginTop: 10}}
-                    data={this.state.socialAccount}
+                    data={this.state.mySocials}
                     renderItem={({item}) => this.social_account(item)}
                     keyExtractor={item => item.id}
                   />
@@ -493,12 +462,17 @@ export default class MyProfile extends React.Component {
 
             <View style={styles.revScores}>
               <Text style={styles.headingText}>My Ringtones</Text>
-              <FlatList
-                style={{marginTop: 10}}
-                data={this.state.ring_tones}
-                renderItem={({item}) => this.my_ringtones(item)}
-                keyExtractor={item => item.keyId}
-              />
+              {
+                this.state.myRevtoneNames.length?
+                  <FlatList
+                    style={{marginTop: 10}}
+                    data={this.state.ring_tones}
+                    renderItem={({item}) => this.my_ringtones(item)}
+                    keyExtractor={item => item.keyId}
+                  />
+                    :
+                    <Text style={styles.noText}>No Ringtones Added</Text>
+              }
             </View>
 
             {/*====> RevTones Scores FlatList View <====*/}

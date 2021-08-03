@@ -23,7 +23,7 @@ const {decode, encode} = require('base64-arraybuffer')
 const toWav = require('audiobuffer-to-wav')
 import createBuffer from 'audio-buffer-from'
 import util from 'audio-buffer-utils'
-import {AudioPlayer} from 'react-native-audio-recorder-player'
+import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 
 // import format from 'audio-format';
 
@@ -44,10 +44,10 @@ class TrimAudioScreen extends React.Component {
   //====> Constructor Method <====//
 
   constructor (props) {
-    super(props)
+    super(props);
+    this.audioPlayer = new AudioRecorderPlayer();
     this.state = {
       loaded: false,
-      playing: false,
       paused: false,
       trimmerLeftHandlePosition: 0,
       trimmerRightHandlePosition: 1000,
@@ -283,49 +283,49 @@ class TrimAudioScreen extends React.Component {
   }
 
   initAudioPlayer = () => {
-    AudioPlayer.onFinished = () => {
-      console.log('finished playback')
-      this.setState({paused: true, loaded: false, playing: false})
-    }
-    AudioPlayer.setFinishedSubscription()
-
-    AudioPlayer.onProgress = data => {
-      console.log('progress', data)
-    }
-    AudioPlayer.setProgressSubscription()
   }
 
-  play = audioPath => {
-    console.log('audio path: ', audioPath)
+  play = async audioPath => {
     if (this.state.loaded) {
-      AudioPlayer.unpause()
+      await this.audioPlayer.resumePlayer();
       this.setState({paused: false, playing: true})
     } else {
-      AudioPlayer.playWithUrl(audioPath)
+      await this.audioPlayer.startPlayer(audioPath);
+      this.audioPlayer.addPlayBackListener((e) => {
+        console.log({
+          currentPositionSec: e.currentPosition,
+          currentDurationSec: e.duration,
+          playTime: this.audioPlayer.mmssss(Math.floor(e.currentPosition)),
+          duration: this.audioPlayer.mmssss(Math.floor(e.duration)),
+        });
+        if(e.currentPosition === e.duration){
+          this.setState({paused: true, loaded: false, playing: false});
+        }
+      });
       this.setState({paused: false, loaded: true, playing: true})
     }
   }
 
-  pause = () => {
-    AudioPlayer.pause()
+  pause = async () => {
+    await this.audioPlayer.pausePlayer();
     this.setState({paused: true, playing: false})
   }
 
-  stop = () => {
-    AudioPlay.stop()
+  stop = async () => {
+    await this.audioPlayer.stopPlayer()
     this.setState({paused: true, playing: false})
   }
 
-  playAudio = (paused, item) => {
+  playAudio = async (paused, item) => {
     console.log(item)
     let path;
     path = (Platform.OS == "android") ? "file://" + item : item;
-    if (this.state.playing) this.pause()
-    else this.play(path)
+    if (this.state.playing) await this.pause()
+    else await this.play(path)
   }
 
-  onBack = () => {
-    if (this.state.playing) AudioPlayer.pause()
+  onBack = async () => {
+    if (this.state.playing) await this.audioPlayer.pausePlayer();
     this.setState({paused: true, playing: false})
     this.props.navigation.goBack()
   }

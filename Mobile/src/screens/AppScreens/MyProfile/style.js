@@ -23,10 +23,10 @@ const styles= StyleSheet.create({
         justifyContent:'center',
     },
     image:{
-        height:'65%',
-        width:'65%',
+        height:100,
+        width:100,
         resizeMode:'contain',
-        borderRadius: wp(20),
+        borderRadius: 50,
     },
     // userImageContainer: {
     //     width: "75%",
@@ -75,7 +75,6 @@ const styles= StyleSheet.create({
         flexGrow: 1,
     },
     revScores:{
-        height:Platform.OS === 'ios' ? hp(19) : hp(21),
         width:wp(94),
         alignSelf:'center',
         marginTop: 15,

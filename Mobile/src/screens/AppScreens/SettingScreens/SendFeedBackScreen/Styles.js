@@ -18,22 +18,20 @@ const Styles = StyleSheet.create({
     headerView:
     {
         backgroundColor: colors.app_header_color,
-        flex: 0.09
+        height: 72,
     },
     middleView: {
-        flex: 0.7,
         marginHorizontal: wp(3),
         // backgroundColor: "red"
     },
     LastView: {
-        flex: 0.21,
         marginHorizontal: wp(3),
         justifyContent: "center",
         alignItems: "center"
     },
     uploadButtonView: {
+        marginTop: 30,
         width: '100%',
-        height: '50%',
         justifyContent: "flex-end",
         alignItems: "center",
 

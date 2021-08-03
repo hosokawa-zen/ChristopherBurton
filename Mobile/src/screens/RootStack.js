@@ -2,10 +2,10 @@
 
 import { createStackNavigator,CardStyleInterpolators  } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import {Image,TouchableOpacity,View,Text} from 'react-native';
+import {Image, TouchableOpacity, View, Text, Alert} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import auth from "@react-native-firebase/auth";
+import auth, {firebase} from "@react-native-firebase/auth";
 import database from "@react-native-firebase/database";
 
 //====> Local files <====//
@@ -45,13 +45,14 @@ import {DrawerItem} from '@react-navigation/drawer';
 import OnBoarding from './OnBoarding/OnBoarding';
 import colors from '../../assets/colors';
 import images from "../../assets/images";
+import SyncSocialMediaAccountScreen from "./AppScreens/SettingScreens/SyncSocialMediaAccountScreen/View";
 
 
 let userId = ''
 let userInfo = null
 let avatarUri = ''
 
-// User 
+// User
 function getUser() {
     auth().onAuthStateChanged((user) => {
       if (user) {
@@ -87,7 +88,30 @@ function getUser() {
 //================================ Drawer Function ======================================//
 function CustomDrawerContent(props) {
     getUser()
-    
+
+    const onLogout = async() => {
+        Alert.alert(
+            'Log Out',
+            'Are you sure you want to log out?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Confirm',
+                    style: 'destructive',
+                    onPress: async () => {
+                        await firebase.auth().signOut().then(() => {
+                            props.navigation.navigate('LoginScreen');
+                        })
+                    }
+                }
+            ],
+            { cancelable: false }
+        )
+    }
+
     return (
 
         <View {...props} style={styles.drawerMainContainer}>
@@ -137,7 +161,7 @@ function CustomDrawerContent(props) {
                     style={styles.drawerItemStyles}
                     label={() => <Text style={styles.drawerItemLabelText} >{"Logout"}</Text>}
                     icon={() => <Image source={images.icn_logout} style={[styles.drawerItemImage,{tintColor:'grey'}]} />}
-                    onPress={() => props.navigation.navigate('LoginScreen')}
+                    onPress={onLogout}
                 />
 
                 {/*<DrawerItem*/}
@@ -205,6 +229,7 @@ export default function Stack() {
                    <RootStack.Screen name="TermsAndCondtions" component={TermsAndCondtions}/>
                    <RootStack.Screen name="PrivacyPolicy" component={PrivacyPolicy}/>
                    <RootStack.Screen name="SendFeedback" component={SendFeedback}/>
+                   <RootStack.Screen name="SyncSocial" component={SyncSocialMediaAccountScreen}/>
                    <RootStack.Screen name="AboutApp" component={AboutApp}/>
 
                    {/*New App Screens*/}

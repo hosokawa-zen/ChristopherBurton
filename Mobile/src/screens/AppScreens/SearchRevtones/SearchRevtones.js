@@ -9,10 +9,10 @@ import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 //====> Local files <====//
 
 import SearchRevComponent from '../../../Components/AppComponents/SearchRevComponent/SearchRevComponent'
-import Dropdown from '../../../Components/ModalDropdown'
 import AppHeader from '../../../Components/AppHeader'
 import images from '../../../../assets/images'
 import styles from './style'
+import {Select} from "../../../Components/Select";
 
 export default class SearchRevtones extends React.Component {
   //====> Constructor Method <====//
@@ -30,39 +30,17 @@ export default class SearchRevtones extends React.Component {
       playing: false,
       loaded: false,
       filterItems: null,
+      currentAudio: '',
       //====> Search Array <====//
 
-      searchCars: [
-        {
-          id: 1,
-          image: images.car_1,
-          title: 'CHEVROLET CAMARO',
-          yearCar: '2018',
-          typeCar: 'Muscle Car',
-        },
-        {
-          id: 2,
-          image: images.car_2,
-          title: 'AUDI R8 V10 PLUS',
-          yearCar: '2017',
-          typeCar: 'Exotic Car',
-        },
-        {
-          id: 3,
-          image: images.car_1,
-          title: 'BMW E39',
-          yearCar: '2009',
-          typeCar: 'European',
-        },
-        {
-          id: 4,
-          image: images.car_2,
-          title: 'HONDA CIVIC',
-          yearCar: '2011',
-          typeCar: 'Asian Tuner',
-        },
-      ],
+      searchCars: [],
+      sort: 0,
     }
+    this.sortOptions = [
+      {value: 0, text: 'Alphabetical Order'},
+      {value: 1, text: 'Most Viewed'},
+      {value: 2, text: 'Most Used'}
+    ];
   }
 
   async componentDidMount () {
@@ -131,23 +109,14 @@ export default class SearchRevtones extends React.Component {
   }
 
   initAudioPlayer = () => {
-    // AudioPlayer.onFinished = () => {
-    //   console.log('finished playback')
-    //   this.setState({paused: true, loaded: false, playing: false})
-    // }
-    // AudioPlayer.setFinishedSubscription()
-    //
-    // AudioPlayer.onProgress = data => {
-    //   console.log('progress', data)
-    // }
-    // AudioPlayer.setProgressSubscription()
   }
 
   play = async (audioPath) => {
-    if (this.state.loaded) {
-      await this.audioPlayer.pausePlayer();
+    if (this.state.loaded && this.state.currentAudio === audioPath) {
+      await this.audioPlayer.resumePlayer();
       this.setState({paused: false, playing: true})
     } else {
+      await this.audioPlayer.stopPlayer();
       await this.audioPlayer.startPlayer(audioPath);
       this.audioPlayer.addPlayBackListener((e) => {
         console.log({
@@ -156,8 +125,11 @@ export default class SearchRevtones extends React.Component {
           playTime: this.audioPlayer.mmssss(Math.floor(e.currentPosition)),
           duration: this.audioPlayer.mmssss(Math.floor(e.duration)),
         });
+        if(e.currentPosition === e.duration){
+          this.setState({paused: true, loaded: false, playing: false});
+        }
       });
-      this.setState({paused: false, loaded: true, playing: true})
+      this.setState({paused: false, loaded: true, playing: true, currentAudio: audioPath})
     }
   }
 
@@ -180,7 +152,7 @@ export default class SearchRevtones extends React.Component {
       .catch(function (error) {
         alert('Data could not be updated.' + error)
       })
-    if (this.state.playing) await this.pause()
+    if (this.state.playing && this.state.currentAudio === item.audio) await this.pause()
     else await this.play(item.audio)
   }
 
@@ -190,21 +162,27 @@ export default class SearchRevtones extends React.Component {
     let filtered = revtons.filter(rev => {
       if (rev.carMake.toLowerCase().includes(items.carMake.toLowerCase())) {
         if (rev.carModel.toLowerCase().includes(items.carModel.toLowerCase())) {
-          if (items.carYearFrom == '' || items.carYearTo == '') return true
           if (
-            items.carYearFrom != '' &&
-            parseInt(rev.carYear) > parseInt(items.carYearFrom) &&
-            items.carYearTo == '' &&
-            parseInt(rev.carYear) < parseInt(items.carYearTo)
-          )
+            items.carYearFrom !== '' &&
+            parseInt(rev.carYear) < parseInt(items.carYearFrom)){
+            return false;
+          }
+          if(
+            items.carYearTo !== '' &&
+            parseInt(rev.carYear) > parseInt(items.carYearTo)
+          ){
+            return false;
+          }
             return true
         }
       }
+      return false;
     })
     this.setState({revtons: filtered})
   }
 
-  sort = (index = 0, value = 'Alphabetical Order') => {
+  sort = (index = 0) => {
+    this.setState({sort: index});
     this.sortIndex = index
     let revtons = this.state.revtons
     if (index == 0) {
@@ -279,6 +257,7 @@ export default class SearchRevtones extends React.Component {
   }
 
   render () {
+    const { sort } = this.state;
     return (
       <View style={styles.mainContainer}>
         {/*====> Header View <====*/}
@@ -305,17 +284,10 @@ export default class SearchRevtones extends React.Component {
             {/*====> DropDown View <====*/}
 
             <View style={styles.dropdownView}>
-              <Dropdown
-                listViewWidth={'91%'}
-                options={['Alphabetical Order', 'Most Viewed', 'Most Used']}
-                defaultButtontext={'Alphabetical Order'}
-                dropdownStyle={{height: '100%', width: '100%'}}
-                dropdownOptionsStyle={{
-                  width: '91.5%',
-                  marginRight: '14.5%',
-                  marginTop: '6%',
-                }}
-                onSelect={(index, value) => this.sort(index, value)}
+              <Select
+                options={this.sortOptions}
+                value={sort}
+                onChange={selected => this.sort(selected)}
               />
             </View>
           </View>

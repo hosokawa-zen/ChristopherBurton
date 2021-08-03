@@ -5,7 +5,6 @@ import React from 'react'
 
 //====> Local files <====//
 
-import Dropdown from '../../../Components/ModalDropdown'
 import Button from '../../../Components/Button/Button'
 import AppHeader from '../../../Components/AppHeader'
 import AppInput from '../../../Components/AppInput'

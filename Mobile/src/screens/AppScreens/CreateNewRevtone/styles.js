@@ -13,20 +13,19 @@ const styles = StyleSheet.create({
 
     headerView:
     {
-        flex: 0.1
+        height: 72
     },
 
     mainView:
     {
-        flex: 0.9,
         paddingHorizontal: wp(3),
         paddingTop: Platform.OS === 'ios' ? wp(3) : wp(1),
         // backgroundColor:colors.blue
 
     },
     revTonesContainer: {
-        marginTop: wp(2),
-        height: hp(7),
+        marginTop: 8,
+        paddingVertical: 8,
         width: '100%',
         borderRadius: 5,
         backgroundColor: colors.app_button_color,
@@ -34,7 +33,6 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     leftImageContainer: {
-        height: hp(9),
         width: '10%',
         // backgroundColor: colors.app_button_color,
         paddingLeft: wp(4),
@@ -53,7 +51,6 @@ const styles = StyleSheet.create({
 
     },
     carStyleInput: {
-        height: wp(16),
         width: '100%',
         // backgroundColor: "green"
     },
@@ -62,8 +59,16 @@ const styles = StyleSheet.create({
         height: wp(8),
         width: wp(8),
         resizeMode: 'contain'
-
     },
+    imageContainer: {
+        alignItems: 'center'
+    },
+    imageStyles2:
+        {
+            height: 96,
+            width: 96,
+            resizeMode: 'contain'
+        },
     revTonesStyle: {
         color: colors.white,
         fontSize: wp(4),
@@ -72,7 +77,6 @@ const styles = StyleSheet.create({
 
     },
     buttonContainer: {
-        flex: 0.1,
         justifyContent: "center",
         alignItems: "center"
         // backgroundColor: "red",
@@ -90,19 +94,9 @@ const styles = StyleSheet.create({
     },
     dropdownView:
     {
-        height: hp(6),
-        width: wp(92),
-        justifyContent: 'center',
-        alignItems: 'center',
         marginTop: 10,
         // marginBottom: wp(2.5),
-        paddingHorizontal: '5%',
         backgroundColor: colors.app_header_color,
-        paddingBottom: '10%',
-        borderRadius: wp(1),
-        paddingRight: '7%',
-        borderWidth: 0.5,
-        borderColor: colors.white
     },
     descriptionStyle: {
         height: hp(20),

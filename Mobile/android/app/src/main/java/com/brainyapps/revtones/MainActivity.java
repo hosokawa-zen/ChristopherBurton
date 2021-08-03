@@ -1,4 +1,4 @@
-package com.christopher_burton;
+package com.brainyapps.revtones;
 
 import com.facebook.react.ReactActivity;
 

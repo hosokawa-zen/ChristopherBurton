@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "760785629906",
-    "firebase_url": "https://revtones-9775d-default-rtdb.firebaseio.com",
-    "project_id": "revtones-9775d",
-    "storage_bucket": "revtones-9775d.appspot.com"
+    "project_number": "47349031067",
+    "firebase_url": "https://revtones-d6b45-default-rtdb.firebaseio.com",
+    "project_id": "revtones-d6b45",
+    "storage_bucket": "revtones-d6b45.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:760785629906:android:9c838cc51736b5dea7730b",
+        "mobilesdk_app_id": "1:47349031067:android:3fbeda5c4c7cb414dc263e",
         "android_client_info": {
-          "package_name": "com.christopher_burton"
+          "package_name": "com.brainyapps.revtones"
         }
       },
       "oauth_client": [
         {
-          "client_id": "760785629906-b402m10s4ec4ngrp75kglc8ffsr6bk3c.apps.googleusercontent.com",
+          "client_id": "47349031067-8rhkk700n61f7qd1pphrigfbqbq19ihm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.christopher_burton",
-            "certificate_hash": "576389c4330cf8863d772bc7e10ca3f47b08e01a"
+            "package_name": "com.brainyapps.revtones",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
         {
-          "client_id": "760785629906-aj6u1q5tgljte92u0lnvtl2u49j8jq96.apps.googleusercontent.com",
+          "client_id": "47349031067-vtd15llagg72ddr2bq58hakh0s2205sn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBSz_hlYmlkTcJWEhY5iLYO8WOPI5r0UXo"
+          "current_key": "AIzaSyDpLxY4uTwTYyd547CWq9srEXbd0mrqPts"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "760785629906-aj6u1q5tgljte92u0lnvtl2u49j8jq96.apps.googleusercontent.com",
+              "client_id": "47349031067-vtd15llagg72ddr2bq58hakh0s2205sn.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

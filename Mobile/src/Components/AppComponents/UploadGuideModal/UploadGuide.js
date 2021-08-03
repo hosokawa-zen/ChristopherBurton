@@ -27,7 +27,7 @@ class UploadGuide extends React.Component {
 
                     <View style={styles.topTitle}>
                         <Text style={styles.textRateApp}>
-                            How to Upload Your Rintone
+                            How to Upload Your Ringtone
                         </Text>
                     </View>
                     <View style={styles.textDescriptionContainer}>

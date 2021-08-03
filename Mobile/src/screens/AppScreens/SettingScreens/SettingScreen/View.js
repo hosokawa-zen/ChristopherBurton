@@ -2,7 +2,7 @@
 //================================ React Native Imported Files ======================================//
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { View, FlatList, StatusBar, Image, Text, TouchableOpacity, Modal } from 'react-native';
+import {View, FlatList, StatusBar, Image, Text, TouchableOpacity, Modal, Alert} from 'react-native';
 import React from 'react';
 
 //================================ Local Imported Files ======================================//
@@ -123,6 +123,7 @@ class SettingsScreen extends React.Component {
         switch (id) {
 
             case 1:
+                this.props.navigation.navigate('SyncSocial');
                 break;
 
             case 2:
@@ -148,8 +149,22 @@ class SettingsScreen extends React.Component {
                 this.props.navigation.navigate('TermsAndCondtions');
                 break;
             case 8:
-                this.props.navigation.navigate('LoginScreen');
-
+                Alert.alert(
+                    'Log Out',
+                    'Are you sure you want to log out?',
+                    [
+                        {
+                            text: 'Cancel',
+                            style: 'cancel'
+                        },
+                        {
+                            text: 'Confirm',
+                            style: 'destructive',
+                            onPress: () => this.props.navigation.navigate('LoginScreen')
+                        }
+                    ],
+                    { cancelable: false }
+                )
                 break;
         }
     }

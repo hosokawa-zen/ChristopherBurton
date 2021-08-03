@@ -33,7 +33,6 @@ const styles= StyleSheet.create({
     },
     checkBoxView:{
         flexDirection:'row',
-        width:'31%',
         justifyContent:'space-between',
     },
     checkBoxViewCylinders:{
