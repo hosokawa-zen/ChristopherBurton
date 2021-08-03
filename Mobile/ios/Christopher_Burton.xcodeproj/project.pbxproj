@@ -16,11 +16,10 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* Christopher_BurtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* Christopher_BurtonTests.m */; };
-		3C8B605FEDEA33BED353F0FC /* libPods-Christopher_Burton-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6607231C68D2DDB72F2FE635 /* libPods-Christopher_Burton-tvOS.a */; };
 		61A3D22C2637294B00637332 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 61F30BAC26365E010031EF16 /* GoogleService-Info.plist */; };
-		6682EEE9B6364E6786D65434 /* libRNAudio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB330B789522481FB1E92648 /* libRNAudio.a */; };
+		A0E493D026B983FA00EB4EF5 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E493CF26B983FA00EB4EF5 /* File.swift */; };
+		A0E493D126B983FA00EB4EF5 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E493CF26B983FA00EB4EF5 /* File.swift */; };
 		CEF348D94AF85C90801271B4 /* libPods-Christopher_Burton-Christopher_BurtonTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B0529EBC668CF3B8E0DBB5A /* libPods-Christopher_Burton-Christopher_BurtonTests.a */; };
-		E0C0B248E6D92774056501A9 /* libPods-Christopher_Burton-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 950E6C170EFFF9018009F4BA /* libPods-Christopher_Burton-tvOSTests.a */; };
 		FE5C0D92CE4ADA012C80679D /* libPods-Christopher_Burton.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1EB8B047C2B33A51C2A68C75 /* libPods-Christopher_Burton.a */; };
 /* End PBXBuildFile section */
 
@@ -38,13 +37,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
 			remoteInfo = "Christopher_Burton-tvOS";
-		};
-		6159819126364B3600D9A3F0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FA61BE13DE894FBA9A4786AE /* RNAudio.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 42F559BA1CFC90C400DC3F84;
-			remoteInfo = RNAudio;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -66,19 +58,14 @@
 		444FC1E0AE532C2530A92E43 /* Pods-Christopher_Burton-Christopher_BurtonTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Christopher_Burton-Christopher_BurtonTests.debug.xcconfig"; path = "Target Support Files/Pods-Christopher_Burton-Christopher_BurtonTests/Pods-Christopher_Burton-Christopher_BurtonTests.debug.xcconfig"; sourceTree = "<group>"; };
 		513B85E32C7C4CE30D2FB0A0 /* Pods-Christopher_Burton-Christopher_BurtonTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Christopher_Burton-Christopher_BurtonTests.release.xcconfig"; path = "Target Support Files/Pods-Christopher_Burton-Christopher_BurtonTests/Pods-Christopher_Burton-Christopher_BurtonTests.release.xcconfig"; sourceTree = "<group>"; };
 		61F30BAC26365E010031EF16 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		6607231C68D2DDB72F2FE635 /* libPods-Christopher_Burton-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Christopher_Burton-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		68305EB75042D3C75AA7625F /* Pods-Christopher_Burton-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Christopher_Burton-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Christopher_Burton-tvOSTests/Pods-Christopher_Burton-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		787DF0A0AB1244A1B992F9BE /* Montserrat.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Montserrat.otf; path = ../assets/fonts/Montserrat.otf; sourceTree = "<group>"; };
-		950E6C170EFFF9018009F4BA /* libPods-Christopher_Burton-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Christopher_Burton-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B0529EBC668CF3B8E0DBB5A /* libPods-Christopher_Burton-Christopher_BurtonTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Christopher_Burton-Christopher_BurtonTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		ABCE0F33795ADED7C60FFA2A /* Pods-Christopher_Burton-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Christopher_Burton-tvOS.release.xcconfig"; path = "Target Support Files/Pods-Christopher_Burton-tvOS/Pods-Christopher_Burton-tvOS.release.xcconfig"; sourceTree = "<group>"; };
+		A0E493CD26B983FA00EB4EF5 /* Christopher_Burton-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Christopher_Burton-Bridging-Header.h"; sourceTree = "<group>"; };
+		A0E493CF26B983FA00EB4EF5 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = File.swift; path = Christopher_Burton/File.swift; sourceTree = "<group>"; };
 		B689617A970C6E8FF9CF5632 /* Pods-Christopher_Burton.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Christopher_Burton.debug.xcconfig"; path = "Target Support Files/Pods-Christopher_Burton/Pods-Christopher_Burton.debug.xcconfig"; sourceTree = "<group>"; };
 		CB330B789522481FB1E92648 /* libRNAudio.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNAudio.a; sourceTree = "<group>"; };
-		DF2796467C9B4ED8F6A2603F /* Pods-Christopher_Burton-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Christopher_Burton-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Christopher_Burton-tvOS/Pods-Christopher_Burton-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		FA61BE13DE894FBA9A4786AE /* RNAudio.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNAudio.xcodeproj; path = "../node_modules/react-native-audio-player-recorder/ios/RNAudio.xcodeproj"; sourceTree = "<group>"; };
-		FC650D259DF5577246B642A3 /* Pods-Christopher_Burton-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Christopher_Burton-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Christopher_Burton-tvOSTests/Pods-Christopher_Burton-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,7 +82,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE5C0D92CE4ADA012C80679D /* libPods-Christopher_Burton.a in Frameworks */,
-				6682EEE9B6364E6786D65434 /* libRNAudio.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,7 +89,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3C8B605FEDEA33BED353F0FC /* libPods-Christopher_Burton-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,7 +96,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E0C0B248E6D92774056501A9 /* libPods-Christopher_Burton-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,6 +129,8 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				A0E493CF26B983FA00EB4EF5 /* File.swift */,
+				A0E493CD26B983FA00EB4EF5 /* Christopher_Burton-Bridging-Header.h */,
 			);
 			name = Christopher_Burton;
 			sourceTree = "<group>";
@@ -156,8 +142,6 @@
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				1EB8B047C2B33A51C2A68C75 /* libPods-Christopher_Burton.a */,
 				9B0529EBC668CF3B8E0DBB5A /* libPods-Christopher_Burton-Christopher_BurtonTests.a */,
-				6607231C68D2DDB72F2FE635 /* libPods-Christopher_Burton-tvOS.a */,
-				950E6C170EFFF9018009F4BA /* libPods-Christopher_Burton-tvOSTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -170,18 +154,9 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
-		6159818E26364B3600D9A3F0 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				6159819226364B3600D9A3F0 /* libRNAudio.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				FA61BE13DE894FBA9A4786AE /* RNAudio.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -221,10 +196,6 @@
 				045D3F8334EADFEAD80A6FCC /* Pods-Christopher_Burton.release.xcconfig */,
 				444FC1E0AE532C2530A92E43 /* Pods-Christopher_Burton-Christopher_BurtonTests.debug.xcconfig */,
 				513B85E32C7C4CE30D2FB0A0 /* Pods-Christopher_Burton-Christopher_BurtonTests.release.xcconfig */,
-				DF2796467C9B4ED8F6A2603F /* Pods-Christopher_Burton-tvOS.debug.xcconfig */,
-				ABCE0F33795ADED7C60FFA2A /* Pods-Christopher_Burton-tvOS.release.xcconfig */,
-				FC650D259DF5577246B642A3 /* Pods-Christopher_Burton-tvOSTests.debug.xcconfig */,
-				68305EB75042D3C75AA7625F /* Pods-Christopher_Burton-tvOSTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -249,6 +220,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				325C13315E672E187F753C48 /* [CP] Copy Pods Resources */,
+				559C262548555AC5EA505D1F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -272,6 +244,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				5D2A6EF326C1BBBB26853AFB /* [CP] Copy Pods Resources */,
 				15D3A814B8A33EC089C13BDA /* [CP-User] [RNFB] Core Configuration */,
+				76221E03E314945E3DDECDF4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -286,7 +259,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Christopher_Burton-tvOS" */;
 			buildPhases = (
-				B4633275D8440947BF020195 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -306,7 +278,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "Christopher_Burton-tvOSTests" */;
 			buildPhases = (
-				5F84E25A1F92E71424406C16 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -335,10 +306,11 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 73NRM5JN65;
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1250;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
+						LastSwiftMigration = 1250;
 						ProvisioningStyle = Automatic;
 					};
 					2D02E48F1E0B4A5D006451C7 = {
@@ -359,12 +331,6 @@
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 6159818E26364B3600D9A3F0 /* Products */;
-					ProjectRef = FA61BE13DE894FBA9A4786AE /* RNAudio.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* Christopher_Burton */,
@@ -374,16 +340,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		6159819226364B3600D9A3F0 /* libRNAudio.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNAudio.a;
-			remoteRef = 6159819126364B3600D9A3F0 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		00E356EC1AD99517003FC87E /* Resources */ = {
@@ -508,6 +464,24 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Christopher_Burton-Christopher_BurtonTests/Pods-Christopher_Burton-Christopher_BurtonTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		559C262548555AC5EA505D1F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Christopher_Burton-Christopher_BurtonTests/Pods-Christopher_Burton-Christopher_BurtonTests-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Christopher_Burton-Christopher_BurtonTests/Pods-Christopher_Burton-Christopher_BurtonTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		5D2A6EF326C1BBBB26853AFB /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -532,28 +506,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Christopher_Burton/Pods-Christopher_Burton-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5F84E25A1F92E71424406C16 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Christopher_Burton-tvOSTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		719DCCBD725AE6179AB650EB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -576,26 +528,22 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B4633275D8440947BF020195 /* [CP] Check Pods Manifest.lock */ = {
+		76221E03E314945E3DDECDF4 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
+				"${PODS_ROOT}/Target Support Files/Pods-Christopher_Burton/Pods-Christopher_Burton-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Christopher_Burton-tvOS-checkManifestLockResult.txt",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Christopher_Burton/Pods-Christopher_Burton-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -652,6 +600,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				A0E493D026B983FA00EB4EF5 /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -661,6 +610,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */,
+				A0E493D126B983FA00EB4EF5 /* File.swift in Sources */,
 				2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -693,6 +643,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 444FC1E0AE532C2530A92E43 /* Pods-Christopher_Burton-Christopher_BurtonTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -724,6 +675,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 513B85E32C7C4CE30D2FB0A0 /* Pods-Christopher_Burton-Christopher_BurtonTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				HEADER_SEARCH_PATHS = (
@@ -770,6 +722,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.brainyapps.RevTones;
 				PRODUCT_NAME = RevTones;
+				SWIFT_OBJC_BRIDGING_HEADER = "Christopher_Burton-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -797,6 +750,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.brainyapps.RevTones;
 				PRODUCT_NAME = RevTones;
+				SWIFT_OBJC_BRIDGING_HEADER = "Christopher_Burton-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -804,11 +758,11 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DF2796467C9B4ED8F6A2603F /* Pods-Christopher_Burton-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -833,6 +787,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.Christopher_Burton-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Christopher_Burton-tvOS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
@@ -840,11 +797,11 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ABCE0F33795ADED7C60FFA2A /* Pods-Christopher_Burton-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -869,6 +826,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.Christopher_Burton-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
+				SWIFT_OBJC_BRIDGING_HEADER = "Christopher_Burton-tvOS-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
@@ -876,8 +835,8 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FC650D259DF5577246B642A3 /* Pods-Christopher_Burton-tvOSTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -911,8 +870,8 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 68305EB75042D3C75AA7625F /* Pods-Christopher_Burton-tvOSTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
@@ -976,6 +935,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1036,6 +996,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "arm64 ";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
