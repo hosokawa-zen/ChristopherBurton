@@ -22,20 +22,9 @@ const styles= StyleSheet.create({
     },
     dropdownView:
         {
-            height:hp(5.5),
-            width:wp(92),
-            justifyContent:'center',
-            alignItems:'center',
-            // marginBottom:wp(2.5),
-            paddingHorizontal:'5%',
+            width: '100%',
+            paddingHorizontal: 12,
             backgroundColor:colors.app_header_color,
-            paddingBottom:Platform.OS === 'ios' ? '10%' : '8.5%',
-            borderRadius:wp(1),
-            paddingRight:'7%',
-            borderWidth:2,
-            borderColor:colors.white
-
-
         },
     flatListView:{
         flex: Platform.OS === 'ios' ? 0.89 : 0.86,

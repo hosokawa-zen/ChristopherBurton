@@ -12,7 +12,7 @@ import React from 'react'
 import auth from '@react-native-firebase/auth'
 import database from '@react-native-firebase/database'
 
-import {AudioPlayer} from 'react-native-audio-recorder-player'
+import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 
 //====> Local files <====//
 
@@ -35,6 +35,7 @@ class RevtoneGameScreen extends React.Component {
     this.firstBoot = true
     this.finishedRound = false
     this.clockCall = ''
+    this.audioPlayer = new AudioRecorderPlayer();
     this.state = {
       user: null,
       prevScore: 0,
@@ -302,35 +303,46 @@ class RevtoneGameScreen extends React.Component {
   prepareRevtones = () => {}
 
   initAudioPlayer = () => {
-    AudioPlayer.onFinished = () => {
-      console.log('finished playback')
-      this.setState({paused: true, loaded: false, playing: false})
-    }
-    AudioPlayer.setFinishedSubscription()
-
-    AudioPlayer.onProgress = data => {
-      console.log('progress', data)
-    }
-    AudioPlayer.setProgressSubscription()
+    // AudioPlayer.onFinished = () => {
+    //   console.log('finished playback')
+    //   this.setState({paused: true, loaded: false, playing: false})
+    // }
+    // AudioPlayer.setFinishedSubscription()
+    //
+    // AudioPlayer.onProgress = data => {
+    //   console.log('progress', data)
+    // }
+    // AudioPlayer.setProgressSubscription()
   }
 
-  play = audioPath => {
+  play = async (audioPath) => {
     if (this.state.loaded) {
-      AudioPlayer.unpause()
+      await this.audioPlayer.resumePlayer();
       this.setState({paused: false, playing: true})
     } else {
-      AudioPlayer.playWithUrl(audioPath)
+      await this.audioPlayer.startPlayer(audioPath);
+      this.audioPlayer.addPlayBackListener((e) => {
+        console.log({
+          currentPositionSec: e.currentPosition,
+          currentDurationSec: e.duration,
+          playTime: this.audioPlayer.mmssss(Math.floor(e.currentPosition)),
+          duration: this.audioPlayer.mmssss(Math.floor(e.duration)),
+        });
+        if(e.currentPosition === e.duration){
+          this.setState({paused: true, loaded: false, playing: false});
+        }
+      });
       this.setState({paused: false, loaded: true, playing: true})
     }
   }
 
-  pause = () => {
-    AudioPlayer.pause()
+  pause = async () => {
+    await this.audioPlayer.pausePlayer();
     this.setState({paused: true, playing: false})
   }
 
-  stop = () => {
-    AudioPlay.stop()
+  stop = async () => {
+    await this.audioPlayer.stopPlayer();
     this.setState({paused: true, playing: false})
   }
 

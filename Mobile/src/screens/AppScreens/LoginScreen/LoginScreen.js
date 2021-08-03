@@ -35,8 +35,8 @@ class LoginScreen extends React.Component {
       password: '',
       remember: false,
     }
-    
-    
+
+
   }
 
   componentDidMount() {
@@ -94,11 +94,18 @@ class LoginScreen extends React.Component {
           RNProgressHud.dismiss()
         })
         .catch(error => {
+          console.log('error', error.code);
           RNProgressHud.dismiss()
-          alert(error.message)
+          if(error.code === 'auth/too-many-requests'){
+            alert('Too many request Error. After a few minutes, please retry again.');
+          } else if(error.code === 'auth/wrong-password'){
+            alert('Password is invalid');
+          }
           console.error(error)
         })
     } catch (error) {
+      // if(error.code = '')
+      console.log('error', error);
       alert(JSON.stringify(error.message))
     }
   }
@@ -115,7 +122,7 @@ class LoginScreen extends React.Component {
             title={'LOGIN'}
             bgColor={colors.app_header_color}
             leftIconPath={images.back_arrow}
-            onLeftIconPress={() => this.props.navigation.goBack()}
+            onLeftIconPress={() => this.props.navigation.navigate('SignupWith')}
           />
         </View>
 

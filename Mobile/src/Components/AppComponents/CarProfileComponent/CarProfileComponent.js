@@ -43,7 +43,7 @@ export default class CarProfileComponent extends React.Component {
                     <View style={styles.playView}>
                         <Button style={styles.btnStyle} titleStyle={styles.titleStyle} title={'Download Ringtone'} onPress={() => this.props.onDownloadPress()}/>
                         <TouchableOpacity onPress={() => this.props.onFlagPress()}>
-                            <Image style={styles.icon} source={images.flag} />
+                            <Image style={styles.icon} source={this.props.is_favorite?images.full_flag:images.flag} />
                         </TouchableOpacity>
                     </View>
 

@@ -17,12 +17,11 @@ import database from '@react-native-firebase/database'
 import storage from '@react-native-firebase/storage'
 import ImageResizer from 'react-native-image-resizer'
 import {launchImageLibrary} from 'react-native-image-picker'
-import AudioPlayer from 'react-native-audio-recorder-player'
+import AudioRecorderPlayer from 'react-native-audio-recorder-player'
 
 //====> Local files <====//
 
 import SocialAccountComponent from '../../../Components/AppComponents/SocialAccountComponent/SocialAccountComponent'
-import Dropdown from '../../../Components/ModalDropdown'
 import Button from '../../../Components/Button/Button'
 import AppHeader from '../../../Components/AppHeader'
 import AppInput from '../../../Components/AppInput'
@@ -30,6 +29,7 @@ import images from '../../../../assets/images'
 import colors from '../../../../assets/colors'
 import styles from './style'
 import {TouchableOpacity} from 'react-native-gesture-handler'
+import {openGotoSocialApp, socials} from "../../../socials";
 
 export default class EditProfile extends React.Component {
   //====> Render Method <====//
@@ -37,6 +37,7 @@ export default class EditProfile extends React.Component {
   constructor (props) {
     super(props)
     this.userId = ''
+    this.audioPlayer = new AudioRecorderPlayer();
     this.state = {
       paused: false,
       loaded: false,
@@ -44,31 +45,6 @@ export default class EditProfile extends React.Component {
       user: null,
       avatar: '',
       uploadUri: '',
-
-      //====> Social Account Array <====//
-
-      socialAccount: [
-        {
-          id: 1,
-          imageSocial: images.icn_facebook_blue,
-          title: 'Facebook',
-        },
-        {
-          id: 2,
-          imageSocial: images.icn_Instagram,
-          title: 'Instagram',
-        },
-        {
-          id: 3,
-          imageSocial: images.icn_youtube,
-          title: 'Youtube',
-        },
-        {
-          id: 4,
-          imageSocial: images.icn_twitter,
-          title: 'Twitter',
-        },
-      ],
 
       //====> Favorites Array <====//
 
@@ -114,6 +90,7 @@ export default class EditProfile extends React.Component {
           number: '0',
         },
       ],
+      mySocials: [],
       myRingtones: [],
       myRingtoneNames: [],
       myRingtoneAudios: [],
@@ -143,6 +120,7 @@ export default class EditProfile extends React.Component {
           notifications: user.notifications,
           maxScore: user.maxScore,
           currentScore: user.currentScore,
+          mySocials: user.mySocials??[],
           myRintone: user.myRingtone,
           myNotification: user.myNotification,
           myRingtones: user.ringtones,
@@ -192,47 +170,44 @@ export default class EditProfile extends React.Component {
         // console.log('User tapped custom button: ', response.customButton);
         // alert(response.customButton);
       } else {
-        const imageUri = response.uri
-        const newWidth = 150
-        const newHeight = 150
-        const compressFormat = 'PNG'
-        const quality = 100
-        const rotation = 0
-        const outputPath = null
-
-        ImageResizer.createResizedImage(
-          imageUri,
-          newWidth,
-          newHeight,
-          compressFormat,
-          quality,
-          rotation,
-          outputPath,
-        ).then(response => {
-          let uploadUri =
+        let uploadUri =
             Platform.OS === 'ios'
-              ? response.uri.replace('file://', '')
-              : response.uri
-          this.setState({
-            uploadUri,
-            avatar: uploadUri,
-          })
-        })
+                ? response.uri.replace('file://', '')
+                : response.uri
+        this.setState({
+          uploadUri,
+          avatar: uploadUri,
+        });
+        // const imageUri = response.uri
+        // const newWidth = 150
+        // const newHeight = 150
+        // const compressFormat = 'PNG'
+        // const quality = 100
+        // const rotation = 0
+        // const outputPath = null
+        //
+        // ImageResizer.createResizedImage(
+        //   imageUri,
+        //   newWidth,
+        //   newHeight,
+        //   compressFormat,
+        //   quality,
+        //   rotation,
+        //   outputPath,
+        // ).then(response => {
+        //   let uploadUri =
+        //     Platform.OS === 'ios'
+        //       ? response.uri.replace('file://', '')
+        //       : response.uri
+        //   this.setState({
+        //     uploadUri,
+        //     avatar: uploadUri,
+        //   })
+        // })
       }
     })
   }
 
-  getDefaultRevtoneButtonText = item => {
-    if (item.title == 'Ringtones') {
-      return this.state.user && this.state.user.myRingtone
-        ? this.state.user.myRingtone.title
-        : 'Please select'
-    } else if (item.title == 'Notifications') {
-      return this.state.user && this.state.user.myNotification
-        ? this.state.user.myNotification.title
-        : 'Please select'
-    }
-  }
 
   onSave = async navEnabled => {
     try {
@@ -271,6 +246,7 @@ export default class EditProfile extends React.Component {
         currentScore: this.state.currentScore ? this.state.currentScore : 0,
         maxScore: this.state.maxScore ? this.state.maxScore : 0,
         favorites: this.state.favorites,
+        mySocials: this.state.mySocials,
         myRingtone: this.state.selectedRingtone,
         myNotification: this.state.selectedNotification,
       }
@@ -282,7 +258,7 @@ export default class EditProfile extends React.Component {
           .ref()
           .update(updates)
           .then(function () {
-            //alert("Data updated successfully.");
+            alert("Data updated successfully.");
             //   history.replace('/admin/revtones');
           })
           .catch(function (error) {
@@ -303,8 +279,7 @@ export default class EditProfile extends React.Component {
   onFavoriteRemove = item => {
     let favs = this.state.favorites
     let favorites = favs.filter(fav => {
-      if (item.audioPath != fav.audioPath) return true
-      return false
+      return item.id !== fav.id;
     })
     this.setState({
       favorites,
@@ -312,9 +287,11 @@ export default class EditProfile extends React.Component {
   }
 
   onMyRingtonesRemove = item => {
-    if (item.title == 'Ringtones') this.setState({selectedRingtone: ''})
-    else if (item.title == 'Notifications')
-      this.setState({selectedNotification: ''})
+    console.log('remove', item);
+    if (item.title === 'Ringtones')
+      this.setState({selectedRingtone: null})
+    else if (item.title === 'Notifications')
+      this.setState({selectedNotification: null})
   }
 
   onRevScoresRemove = item => {
@@ -380,20 +357,28 @@ export default class EditProfile extends React.Component {
   }
 
   onSelectRingtone = (index, value, item) => {
-    if (item.title == 'Ringtones') {
-      this.setState({
-        selectedRingtone: {
-          title: value,
-          audioPath: this.state.myRingtoneAudios[index],
-        },
-      })
-    } else if (item.title == 'Notifications') {
-      this.setState({
-        selectedNotification: {
-          title: value,
-          audioPath: this.state.myRingtoneAudios[index],
-        },
-      })
+    if (item.title === 'Ringtones') {
+      if(!index && !value){
+        this.setState({selectedRingtone: null});
+      } else {
+        this.setState({
+          selectedRingtone: {
+            title: value,
+            audioPath: this.state.myRingtoneAudios[index],
+          },
+        })
+      }
+    } else if (item.title === 'Notifications') {
+      if(!index && !value){
+        this.setState({selectedNotification: null});
+      } else {
+        this.setState({
+          selectedNotification: {
+            title: value,
+            audioPath: this.state.myRingtoneAudios[index],
+          },
+        })
+      }
     }
   }
 
@@ -402,7 +387,9 @@ export default class EditProfile extends React.Component {
     this.setState({selectedNotification})
   }
 
-  onSocialAccountSave = () => {}
+  onSocialAccountSave = () => {
+    this.onSave(false);
+  }
 
   onFavoriteSave = () => {
     this.onSave(false)
@@ -417,68 +404,89 @@ export default class EditProfile extends React.Component {
   }
 
   initAudioPlayer = () => {
-    AudioPlayer.onFinished = () => {
-      console.log('finished playback')
-      this.setState({paused: true, loaded: false, playing: false})
-    }
-    AudioPlayer.setFinishedSubscription()
-
-    AudioPlayer.onProgress = data => {
-      console.log('progress', data)
-    }
-    AudioPlayer.setProgressSubscription()
   }
 
-  play = audioPath => {
+  play = async audioPath => {
     if (this.state.loaded) {
-      AudioPlayer.unpause()
+      await this.audioPlayer.resumePlayer();
       this.setState({paused: false, playing: true})
     } else {
-      AudioPlayer.playWithUrl(audioPath)
+      await this.audioPlayer.startPlayer(audioPath);
+      this.audioPlayer.addPlayBackListener((e) => {
+        console.log({
+          currentPositionSec: e.currentPosition,
+          currentDurationSec: e.duration,
+          playTime: this.audioPlayer.mmssss(Math.floor(e.currentPosition)),
+          duration: this.audioPlayer.mmssss(Math.floor(e.duration)),
+        });
+        if(e.currentPosition === e.duration){
+          this.setState({paused: true, loaded: false, playing: false});
+        }
+      });
       this.setState({paused: false, loaded: true, playing: true})
     }
   }
 
-  pause = () => {
-    AudioPlayer.pause()
+  pause = async () => {
+    await this.audioPlayer.pausePlayer();
     this.setState({paused: true, playing: false})
   }
 
-  playAudio = (item) => {
-    if (this.state.playing) this.pause()
-    else this.play(item.audioPath)
+  playAudio = async (paused, item) => {
+    console.log(item)
+    if (this.state.playing) await this.pause()
+    else await this.play(item.path)
   }
 
-  onBack = () => {
+  onBack = async () => {
     this.props.navigation.goBack()
-    if (this.state.playing) AudioPlayer.pause()
+    if (this.state.playing) await this.audioPlayer.stopPlayer();
     this.setState({paused: true, playing: false})
   }
 
-  onSocialImagePress = item => {
-    if (item.imageSocial == 84) {
-      if (item.title == 'Ringtones' && this.state.selectedRingtone != '') {
-        this.playAudio(this.state.selectedRingtone)
+  onSocialImagePress = async item => {
+    if (item.imageSocial === 84) {
+      if (item.title === 'Ringtones' && this.state.selectedRingtone !== '') {
+        await this.playAudio(this.state.selectedRingtone)
       } else if (
-        item.title == 'Notifications' &&
-        this.state.selectedNotification != ''
+        item.title === 'Notifications' &&
+        this.state.selectedNotification !== ''
       ) {
-        this.playAudio(this.state.selectedNotification)
+        await this.playAudio(this.state.selectedNotification)
       }
     }
   }
 
   //====> Social Account Method <====//
 
+  onPressItem = (id) => {
+    openGotoSocialApp(id);
+  }
+
+  onToggleItem = (is_added, item_id) => {
+    if(is_added){
+      const mySocials = this.state.mySocials.filter(i => i !== item_id);
+      this.setState({mySocials});
+    } else {
+      const mySocials = [...this.state.mySocials, item_id];
+      this.setState({mySocials});
+    }
+  }
+
   social_account = item => {
+    const is_added = this.state.mySocials.includes(item.id);
     return (
-      <SocialAccountComponent
-        title={item.title}
-        imageSocial={item.imageSocial}
-        iconMedia={true}
-        removeBtn={true}
-        // onPress={() => this.props.navigation.navigate('')}
-      />
+        <View style={styles.itemContainer}>
+          <TouchableOpacity style={styles.itemContent} onPress={() => this.onPressItem(item.id)}>
+            <Image style={styles.img} source={item.imageSocial}/>
+            <Text
+                ellipsizeMode={'tail'}
+                numberOfLines={1}
+                style={styles.textTitle}>{item.title}</Text>
+          </TouchableOpacity>
+          <Button style={styles.btnStyle} bgColor={is_added?colors.app_red:colors.most_blue_button} titleStyle={styles.titleStyle}
+                  title={is_added?'Remove':'Add'} onPress={() => this.onToggleItem(is_added, item.id)}/>
+        </View>
     )
   }
 
@@ -487,13 +495,12 @@ export default class EditProfile extends React.Component {
   favorite_ringtone = item => {
     return (
       <SocialAccountComponent
-        title={item.title + ' ' + item.revInfo}
+        title={item.title + ' ' + (item.revInfo??'')}
         imageSocial={item.imageSocial}
         iconMedia={false}
         removeBtn={item.title == 'Add a revtone' ? false : true}
         onlyText={true}
         onRemoveTrigger={() => this.onFavoriteRemove(item)}
-        // onPress={() => this.props.navigation.navigate('')}
       />
     )
   }
@@ -510,7 +517,6 @@ export default class EditProfile extends React.Component {
         number={item.number}
         numberView={true}
         onRemoveTrigger={() => this.onRevScoresRemove(item)}
-        // onPress={() => this.props.navigation.navigate('')}
       />
     )
   }
@@ -518,25 +524,31 @@ export default class EditProfile extends React.Component {
   //====> RingTones Method <====//
 
   my_ringtones = item => {
-    return (
-      <SocialAccountComponent
-        title={item.title}
-        items={this.state.myRingtoneNames}
-        imageSocial={item.imageSocial}
-        dropDownTitle={'Select a ringtone'}
-        iconMedia={true}
-        removeBtn={item.title == 'Add a revtone' ? false : true}
-        dropDownMusic={true}
-        defaultRingtoneButtonText={this.getDefaultRevtoneButtonText(item)}
-        widthText={'20%'}
-        onRemoveTrigger={() => this.onMyRingtonesRemove(item)}
-        onSelectRingtone={(index, value) =>
-          this.onSelectRingtone(index, value, item)
-        }
-        onSocialImagePress={() => this.onSocialImagePress(item)}
-        //onPress={() => this.props.navigation.navigate('')}
-      />
-    )
+    let defaultIndex = null;
+    if (item.title === 'Ringtones') {
+      defaultIndex = this.state.selectedRingtone?this.state.myRingtoneNames.indexOf(this.state.selectedRingtone.title):null
+    } else if (item.title === 'Notifications') {
+      defaultIndex = this.state.selectedNotification?this.state.myRingtoneNames.indexOf(this.state.selectedNotification.title):null
+    }
+
+      return (
+        <SocialAccountComponent
+          title={item.title}
+          items={this.state.myRingtoneNames}
+          imageSocial={item.imageSocial}
+          dropDownTitle={'Select a ringtone'}
+          iconMedia={true}
+          removeBtn={item.title == 'Add a revtone' ? false : true}
+          dropDownMusic={true}
+          defaultIndex={defaultIndex}
+          widthText={'20%'}
+          onRemoveTrigger={() => this.onMyRingtonesRemove(item)}
+          onSelectRingtone={(index, value) =>
+            this.onSelectRingtone(index, value, item)
+          }
+          onSocialImagePress={() => this.onSocialImagePress(item)}
+        />
+      )
   }
 
   //====> Render Method <====//
@@ -674,8 +686,8 @@ export default class EditProfile extends React.Component {
             <View style={styles.socialAccountView}>
               <Text style={styles.headingText}>Social Media Accounts</Text>
               <FlatList
-                style={{marginTop: 10, flexGrow: 1}}
-                data={this.state.socialAccount}
+                style={{marginTop: 10}}
+                data={socials}
                 renderItem={({item}) => this.social_account(item)}
                 keyExtractor={item => item.id}
               />
@@ -694,36 +706,50 @@ export default class EditProfile extends React.Component {
 
             <View style={styles.socialAccountView}>
               <Text style={styles.headingText}>Favorites</Text>
-              <FlatList
-                style={{marginTop: 10}}
-                data={this.state.favorites}
-                renderItem={({item}) => this.favorite_ringtone(item)}
-                keyExtractor={item => item.id}
-              />
+              {
+                this.state.favorites && this.state.favorites.length?
+                    <>
+                      <FlatList
+                        style={{marginTop: 10, maxHeight: 400}}
+                        data={this.state.favorites}
+                        renderItem={({item}) => this.favorite_ringtone(item)}
+                        keyExtractor={item => item.id}
+                      />
 
-              {/*====> Button View <====*/}
+                      {/*====> Button View <====*/}
 
-              <View style={{alignItems: 'center', marginTop: 15}}>
-                <Button title={'Save'} onPress={() => this.onFavoriteSave()} />
-              </View>
+                      <View style={{alignItems: 'center', marginTop: 15}}>
+                        <Button title={'Save'} onPress={() => this.onFavoriteSave()} />
+                      </View>
+                    </>
+                    :
+                    <Text style={styles.noText}>No Favorites Added</Text>
+              }
             </View>
 
             {/*====> RingTones View <====*/}
 
             <View style={styles.revScores}>
               <Text style={styles.headingText}>My Ringtones</Text>
-              <FlatList
-                style={{marginTop: 10}}
-                data={this.state.ring_tones}
-                renderItem={({item}) => this.my_ringtones(item)}
-                keyExtractor={item => item.id}
-              />
+              {
+                this.state.myRingtoneNames.length ?
+                    <>
+                      <FlatList
+                        style={{marginTop: 10, height:Platform.OS === 'ios' ? hp(29) : hp(31)}}
+                        data={this.state.ring_tones}
+                        renderItem={({item}) => this.my_ringtones(item)}
+                        keyExtractor={item => item.id}
+                      />
 
-              {/*====> Button View <====*/}
+                      {/*====> Button View <====*/}
 
-              <View style={{alignItems: 'center', marginTop: 15}}>
-                <Button title={'Save'} onPress={() => this.onRingtoneSave()} />
-              </View>
+                      <View style={{alignItems: 'center', marginTop: 15}}>
+                        <Button title={'Save'} onPress={() => this.onRingtoneSave()} />
+                      </View>
+                    </>
+                    :
+                  <Text style={styles.noText}>No Ringtones Added</Text>
+              }
             </View>
 
             {/*====> RevTone Score View <====*/}

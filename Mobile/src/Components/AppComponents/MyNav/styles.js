@@ -31,8 +31,8 @@ let Styles = {
     },
 
     userProfileImage: {
-        width: wp(23),
-        height: wp(23),
+        width: wp(20),
+        height: wp(20),
         resizeMode: 'cover',
         borderRadius: wp(11.5),
     },

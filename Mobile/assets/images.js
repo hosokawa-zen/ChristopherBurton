@@ -67,6 +67,7 @@ const images = {
     btn_next_song: require('./images/btn_next_song.png'),
     btn_previous_song: require('./images/btn_previous_song.png'),
     icon_right: require('./images/c.png'),
+    full_flag: require('./images/full_flag.png'),
     flag: require('./images/flag.png'),
     ic_edit_red: require('./images/ic_edit_4.png'),
     ic_mic: require('./images/ic_mic.png'),

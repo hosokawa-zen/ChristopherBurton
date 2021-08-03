@@ -82,8 +82,8 @@ const styles= StyleSheet.create({
         paddingHorizontal: '5%'
     },
     iconSocial:{
-        height:30,
-        width:30,
+        height:36,
+        width:36,
         resizeMode:'contain'
     },
     dot:{

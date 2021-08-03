@@ -25,7 +25,7 @@ const Styles = StyleSheet.create({
     },
     container:
     {
-        flex: 0.73,
+        flex: 0.9,
         borderTopColor: colors.white,
         paddingHorizontal: wp(4),
     },

@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
   ScrollView,
-  Platform,
+  Platform, KeyboardAvoidingView,
 } from 'react-native'
 import React from 'react'
 import database from '@react-native-firebase/database'
@@ -23,15 +23,18 @@ import {launchImageLibrary} from 'react-native-image-picker'
 //====> Local files <====//
 
 import TextModel from '../../../Components/AppComponents/TextModel/View'
-import Dropdown from '../../../Components/ModalDropdown'
 import Button from '../../../Components/Button/Button'
 import AppHeader from '../../../Components/AppHeader'
 import AppInput from '../../../Components/AppInput'
 import images from '../../../../assets/images'
 import colors from '../../../../assets/colors'
 import styles from './styles'
-import Revtones from '../../../Components/AppComponents/RevtonesComponent/Revtones'
-import {LibraryDirectoryPath} from 'react-native-fs'
+import {Select} from "../../../Components/Select";
+
+const scrollPersistTaps = {
+  keyboardShouldPersistTaps: 'always',
+  keyboardDismissMode: 'interactive'
+};
 
 class NewRevtoneScreen extends React.Component {
   //====> Constructor Method <====//
@@ -121,9 +124,7 @@ class NewRevtoneScreen extends React.Component {
 
         let cnames = this.categoriesForDropdown(ctgs)
         this.setState({
-          categories: ctgs,
-          selectedCategory: ctgs[0],
-          category: ctgs[0],
+          categories: ctgs
         })
         this.setState({
           categoryNames: cnames,
@@ -165,6 +166,7 @@ class NewRevtoneScreen extends React.Component {
       })
 
       console.log('RECEIVED PARAMS: audios: ' + this.state.audios)
+      console.log('revton', revton);
       this.categoryIndex = this.getCategoryIndex()
     }
     if (
@@ -547,9 +549,12 @@ class NewRevtoneScreen extends React.Component {
     return names
   }
 
-  onSelectCategory = (index, value) => {
-    let selectedCategory = this.state.categories[index]
-    this.setState({selectedCategory})
+  onSelectCategory = (index) => {
+    let selectedCategory = this.state.categories[index];
+    console.log('select category', selectedCategory);
+    if(selectedCategory){
+      this.setState({selectedCategory})
+    }
   }
 
   choosePhoto = async () => {
@@ -597,10 +602,13 @@ class NewRevtoneScreen extends React.Component {
   //====> Render Method <====//
 
   render () {
-    const {modalVisible, categoryNames} = this.state
-
+    const {modalVisible, categoryNames, selectedCategory} = this.state
+    const categoryOptions = categoryNames.map((i, index) => ({value: index, text: i}));
+    let selectIndex = null;
+    categoryNames.forEach((i, index) => { if(selectedCategory && i === selectedCategory.name){ selectIndex = index; }});
+    console.log('category', categoryOptions, selectedCategory, selectIndex)
     return (
-      <View style={styles.mainContainer}>
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.mainContainer}>
         {/*====> Header View <====*/}
 
         <View style={styles.headerView}>
@@ -614,10 +622,9 @@ class NewRevtoneScreen extends React.Component {
 
         {/*====> Scroll View <====*/}
 
-        <View style={styles.mainView}>
           <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingBottom: hp(4)}}>
+            {...scrollPersistTaps}
+            contentContainerStyle={[styles.mainView, {flexGrow: 1, paddingBottom: hp(4)}]}>
             <Text style={styles.recordFileStyle}>Record Audio File</Text>
 
             {/*====> RevTone Button <====*/}
@@ -678,10 +685,12 @@ class NewRevtoneScreen extends React.Component {
             <Text style={styles.carStyle}>Add Photo</Text>
 
             {this.state.photo != '' && (
-              <Image
-                source={{uri: this.state.photo}}
-                style={styles.imageStyles}
-              />
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={{uri: this.state.photo}}
+                    style={styles.imageStyles2}
+                  />
+                </View>
             )}
             {/*====> Button View <====*/}
 
@@ -703,26 +712,11 @@ class NewRevtoneScreen extends React.Component {
 
             <Text style={styles.carStyle}>Category:</Text>
             <View style={styles.dropdownView}>
-              <Dropdown
-                listViewWidth={'90%'}
-                options={
-                  categoryNames.length > 0
-                    ? [...categoryNames]
-                    : ['loading...', 'loading...']
-                }
-                defaultButtontext={
-                  this.state.selectedCategory
-                    ? this.state.selectedCategory.name
-                    : 'Select Car Category'
-                }
-                dropdownStyle={{height: '100%', width: '100%'}}
-                dropdownOptionsStyle={{
-                  width: '92%',
-                  marginRight: '12%',
-                  marginTop: '6%',
-                  top: '5%',
-                }}
-                onSelect={(i, v) => this.onSelectCategory(i, v)}
+              <Select
+                options={categoryOptions}
+                placeholder={'Select Car Category...'}
+                value={ selectIndex }
+                onChange={(v) => this.onSelectCategory(v)}
               />
             </View>
 
@@ -794,8 +788,7 @@ class NewRevtoneScreen extends React.Component {
               />
             </Modal>
           </ScrollView>
-        </View>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }

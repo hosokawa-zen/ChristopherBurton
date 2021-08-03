@@ -26,7 +26,7 @@ class TextModel extends React.Component {
                         <View style={{ height: wp(0.1), backgroundColor: 'grey' }}></View>
                         <TouchableOpacity onPress={this.props.onPressOkay} style={styles.countinueStyle}  >
                             <Text style={styles.AgreeTextStyleContainer}>
-                                Countine
+                                Continue
                                     </Text>
                         </TouchableOpacity>
                         <View style={{ height: wp(0.1), backgroundColor: 'grey' }}></View>

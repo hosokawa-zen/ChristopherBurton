@@ -62,17 +62,23 @@ class SignupWith extends React.Component {
         try {
             await GoogleSignin.configure({
                 webClientId:
-                    '760785629906-b402m10s4ec4ngrp75kglc8ffsr6bk3c.apps.googleusercontent.com',
+                    '47349031067-vtd15llagg72ddr2bq58hakh0s2205sn.apps.googleusercontent.com',
                 offlineAccess: true,
             })
             await GoogleSignin.hasPlayServices()
-            const credential = await GoogleSignin.signIn()
-            const user_id = credential.user.id
-            if (credential.user) {
-                this.saveUser(credential)
-                this.userId = user_id
-                this.setModalVisible(true)
-            }
+            const {idToken} = await GoogleSignin.signIn()
+            const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+            auth()
+                .signInWithCredential(googleCredential)
+                .then(userCredential => {
+                    if (userCredential.user) {
+                        const user_id = userCredential.user.uid
+                        this.saveUser(userCredential)
+                        this.userId = user_id
+                        this.setModalVisible(true)
+                    }
+                });
         } catch (error) {
             console.log(error)
             alert(error.message)
@@ -90,16 +96,20 @@ class SignupWith extends React.Component {
 
     saveUser = credential => {
         try {
-            const user_id = credential.user.id
-            var update = {}
-            update[`users/${user_id}/user_id`] = user_id
-            update[`users/${user_id}/name`] = credential.user.name
-            update[`users/${user_id}/role`] = 3
-            update[`users/${user_id}/password`] = ''
-            update[`users/${user_id}/email`] = credential.user.email
-            update[`users/${user_id}/avatar`] = credential.user.photo
+            const user_id = credential.user.uid;
+            const names = credential.user.displayName.split(' ');
+            var update = {
+                'userId' : user_id,
+                'firstName' : names[0],
+                'lastName' : names[1]??'',
+                'role' : 3,
+                'password': '',
+                'email' : credential.user.email,
+                'avatar' : credential.user.photoURL
+            };
+
             database()
-                .ref()
+                .ref(`users/${user_id}`)
                 .update(update)
 
         } catch (error) {
@@ -131,7 +141,7 @@ class SignupWith extends React.Component {
                 .signInWithCredential(facebookCredential)
                 .then(userCredential => {
                     if (userCredential.user) {
-                        const user_id = userCredential.user.id
+                        const user_id = userCredential.user.uid
                         this.saveUser(userCredential)
                         this.userId = user_id
                         this.setModalVisible(true)
@@ -159,7 +169,7 @@ class SignupWith extends React.Component {
                     .signInWithCredential(appleCredential)
                 if (userCredential.user) {
                     this.saveUser(userCredential)
-                    const user_id = userCredential.user.id
+                    const user_id = userCredential.user.uid
                     this.userId = user_id
                     this.setModalVisible(true)
                 }
@@ -189,7 +199,7 @@ class SignupWith extends React.Component {
                         .signInWithCredential(appleCredential)
                     if (userCredential.user) {
                         this.saveUser(userCredential)
-                        this.userId = userCredential.user.id;
+                        this.userId = userCredential.user.uid;
                         this.setModalVisible(true)
                     }
                 }
@@ -218,7 +228,7 @@ class SignupWith extends React.Component {
         this.setState({modalVisible: visible})
     }
 
-    navigateScreem() {
+    navigateScreen() {
         if (this.props && this.props.navigation) {
             this.props.navigation.navigate('TermsAndCondtions')
             this.setModalVisible(!this.state.modalVisible)
@@ -232,11 +242,9 @@ class SignupWith extends React.Component {
         }
     }
 
-    onAgree() {
+    onAgree = () => {
         this.setState({modalVisible: false})
-        this.signupWithEmailPassword()
-
-        // this.props.navigation.navigate('drawer')
+        this.props.navigation.navigate('drawer')
     }
 
     onCancel() {

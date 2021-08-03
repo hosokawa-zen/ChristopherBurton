@@ -7,6 +7,7 @@ import React from 'react';
 
 import styles from "./styles";
 import images from "../../../assets/images";
+import auth from "@react-native-firebase/auth";
 
 
 class SplashScreen extends React.Component {
@@ -15,8 +16,13 @@ class SplashScreen extends React.Component {
 //====> ComponentDidMount Method <====//
 
     componentDidMount() {
-        setTimeout(() => {
-            this.props.navigation.navigate('onBoarding');
+        setTimeout(async () => {
+            const user = await auth().currentUser;
+            if(user){
+                this.props.navigation.navigate('drawer')
+            } else {
+                this.props.navigation.navigate('onBoarding');
+            }
         }, 2000);
     }
 
