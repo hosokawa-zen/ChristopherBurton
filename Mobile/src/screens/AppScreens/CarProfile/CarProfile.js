@@ -254,7 +254,9 @@ export default class CarProfile extends React.Component {
   downloadAndSaveFile = file => {
     if (!file) return
     const fileUrl = file.audioPath;
-    const downloadDirPath = `${RNFS.DocumentDirectoryPath}`;
+
+    const downloadDirPath = Platform.OS === 'android'?`${RNFS.DownloadDirectoryPath}`:`${RNFS.DocumentDirectoryPath}`;
+
     const filePath = downloadDirPath+ '/' + file.title + ' ' + this.state.revton.carMake + ' ' + this.state.revton.carModel + '.mp3';
 
     console.log('path', downloadDirPath, filePath);

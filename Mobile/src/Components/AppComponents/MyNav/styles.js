@@ -38,7 +38,6 @@ let Styles = {
     },
     userTextContainer: {
         width: "100%",
-        height: "20%",
         backgroundColor: colors.app_header_color,
         paddingTop:Platform.OS === 'ios' ? hp(0) : hp(2),
 
