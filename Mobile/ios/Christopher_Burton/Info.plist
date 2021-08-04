@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -27,12 +31,26 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.760785629906-05lg1jtnm6novhi2je6vf6ecregg464q</string>
+				<string>com.googleusercontent.apps.47349031067-i4i2nep0spkte3eimsh5ga89fpuijr7n</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string></string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb125701149404527</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>125701149404527</string>
+	<key>FacebookDisplayName</key>
+	<string>RevTones</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -64,8 +82,8 @@
 	<string>RevTones wants to access your photo library for upload post</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>RevTones wants to access your photo library for upload post</string>
-  <key>NSMicrophoneUsageDescription</key>
-  <string>Revtones wants to access your microphone for upload rec</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>RevTones wants to access your microphone for upload rec</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat.otf</string>

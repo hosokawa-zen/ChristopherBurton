@@ -253,28 +253,39 @@ export default class CarProfile extends React.Component {
 
   downloadAndSaveFile = file => {
     if (!file) return
-    const fileUrl = file.audioPath
-    const filePath =
-      Platform.OS == 'android'
-        ? RNFS.DownloadDirectoryPath + '/' + file.title + ' ' + this.state.revton.carMake + ' ' + this.state.revton.carModel + '.wav'
-        : RNFS.DocumentDirectoryPath + '/' + file.title + ' ' + this.state.revton.carMake + ' ' + this.state.revton.carModel + '.wav'
+    const fileUrl = file.audioPath;
+    const downloadDirPath = `${RNFS.DocumentDirectoryPath}/RevTones`;
+    const filePath = downloadDirPath+ '/' + file.title + ' ' + this.state.revton.carMake + ' ' + this.state.revton.carModel + '.mp3';
 
+    console.log('path', downloadDirPath, filePath);
+    RNFS.exists(downloadDirPath).then((res) => {
+      console.log('exist', res);
+      if(!res){
+        RNFS.mkdir(downloadDirPath).then(() => {
+          this.saveFile(fileUrl, filePath);
+        })
+      } else {
+        this.saveFile(fileUrl, filePath);
+      }
+    })
+  }
+
+  saveFile = (fileUrl, filePath) => {
     RNFS.downloadFile({
       fromUrl: fileUrl,
       toFile: filePath,
+    }).promise.then(result => {
+      console.log('------------------> Look in: ', result) //here you get temporary path
+      alert('Successfully downloaded. You can find it in Download or Document folder.')
     })
-      .promise.then(result => {
-        console.log('------------------> Look in: ', result) //here you get temporary path
-        alert('Successfully downloaded. You can find it in Download or Document folder.')
-      })
-      .catch(e => {
-        console.log(e, 'error')
-      })
+        .catch(e => {
+          console.log(e, 'error')
+        })
   }
 
   downloadRevtone = () => {
     this.setModalVisible(false)
-    if (this.state.revton.userId == this.myId) alert('this was made by you')
+    if (this.state.revton.userId === this.myId) alert('this was made by you')
     else {
       console.log(
         '--------------------------> downloadItem info: ',

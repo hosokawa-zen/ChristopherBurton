@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>760785629906-05lg1jtnm6novhi2je6vf6ecregg464q.apps.googleusercontent.com</string>
+	<string>47349031067-i4i2nep0spkte3eimsh5ga89fpuijr7n.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.760785629906-05lg1jtnm6novhi2je6vf6ecregg464q</string>
+	<string>com.googleusercontent.apps.47349031067-i4i2nep0spkte3eimsh5ga89fpuijr7n</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>760785629906-b402m10s4ec4ngrp75kglc8ffsr6bk3c.apps.googleusercontent.com</string>
+	<string>47349031067-8rhkk700n61f7qd1pphrigfbqbq19ihm.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC-JUwvwuHJ1_Lg5QC3HlHwaJaBbrswSHs</string>
+	<string>AIzaSyB2m-LnHID7leVUtxb08TQVWqKdMLyGlhI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>760785629906</string>
+	<string>47349031067</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.brainyapps.revtone</string>
+	<string>comm.brainyapps.RevTones</string>
 	<key>PROJECT_ID</key>
-	<string>revtones-9775d</string>
+	<string>revtones-d6b45</string>
 	<key>STORAGE_BUCKET</key>
-	<string>revtones-9775d.appspot.com</string>
+	<string>revtones-d6b45.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:760785629906:ios:a0da11c0dfc78d26a7730b</string>
+	<string>1:47349031067:ios:288207f046aedeaddc263e</string>
 	<key>DATABASE_URL</key>
-	<string>https://revtones-9775d-default-rtdb.firebaseio.com</string>
+	<string>https://revtones-d6b45-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

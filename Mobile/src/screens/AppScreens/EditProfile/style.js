@@ -61,15 +61,14 @@ const styles= StyleSheet.create({
     },
 
     inputsView:{
-        height:Platform.OS === 'ios' ? hp(40) : hp(47),
+        height:Platform.OS === 'ios' ? hp(50) : hp(47),
         // backgroundColor:'red',
         alignItems:'center',
     },
     infoView:{
-        height:Platform.OS === 'ios' ? hp(9) : hp(11),
+        height:Platform.OS === 'ios' ? hp(12) : hp(11),
         width: '94%',
         // backgroundColor: 'red',
-
     },
 
     infoTitle:{

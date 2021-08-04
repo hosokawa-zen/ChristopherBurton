@@ -5,7 +5,7 @@ import images from "../../assets/images";
 
 const styles = StyleSheet.create({
 	iosPadding: {
-		height: 40,
+		height: 48,
 		justifyContent: 'center',
 	},
 	viewContainer: {
@@ -53,7 +53,7 @@ export const Select = ({
 	}, [selected, initialValue]);
 
 	const Icon = () => (
-		<Image style={{tintColor: 'white', width: 18, height: 11, marginRight: 12}} source={images.ic_dropdown_2}  />
+		<Image style={{tintColor: 'white', width: 18, height: 11, marginRight: 12, marginTop: Platform.OS === 'ios'?6:0}} source={images.ic_dropdown_2}  />
 	);
 	return (
 		<RNPickerSelect

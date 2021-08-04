@@ -344,7 +344,7 @@ class SignUpScreen extends React.Component {
 
                 {/*====> Input View <====*/}
 
-                <View style={{flex: 0.91}}>
+                <View style={{ flexGrow : 1 }}>
                     <View style={styles.midView}>
                         <AppInput
                             placeholder={'Enter Email'}
@@ -355,7 +355,7 @@ class SignUpScreen extends React.Component {
                             }}
                             value={this.state.email}
                         />
-                        <View style={[styles.checkBoxContainer, {paddingVertical: wp(4)}]}>
+                        <View style={[styles.checkBoxContainer, {marginBottom: wp(4)}]}>
                             <View style={styles.checkBoxIcon}>
                                 <Image
                                     style={styles.checkBoxIconStyle}
@@ -388,7 +388,7 @@ class SignUpScreen extends React.Component {
 
                         {/*====> Checks View <====*/}
 
-                        <View style={[styles.checkBoxContainer, {paddingTop: wp(4)}]}>
+                        <View style={[styles.checkBoxContainer]}>
                             <View style={styles.checkBoxIcon}>
                                 <Image
                                     style={styles.checkBoxIconStyle}

@@ -62,7 +62,7 @@ class SignupWith extends React.Component {
         try {
             await GoogleSignin.configure({
                 webClientId:
-                    '47349031067-vtd15llagg72ddr2bq58hakh0s2205sn.apps.googleusercontent.com',
+                    '47349031067-8rhkk700n61f7qd1pphrigfbqbq19ihm.apps.googleusercontent.com',
                 offlineAccess: true,
             })
             await GoogleSignin.hasPlayServices()

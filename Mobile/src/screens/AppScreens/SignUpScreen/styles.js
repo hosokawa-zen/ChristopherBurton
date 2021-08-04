@@ -13,40 +13,27 @@ const styles = StyleSheet.create({
 
     headerView:
     {
-        // height:wp(13),
-        // width:'100%',
-        flex: 0.1,
+        height: 72,
         backgroundColor: colors.app_header_color
 
     },
 
     midView:
     {
-        // height:wp(70),
-        // width:'100%',
         paddingTop: wp(7),
-        flex:Platform.OS === 'ios' ? 0.4 : 0.45,
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor:colors.grey1
-
     },
     buttonView:
     {
-        // height:wp(30),
-        // width:'100%',
-        flex: Platform.OS === 'ios' ? 0.45 : 0.40,
         justifyContent: 'flex-end',
         alignItems: 'center',
-        paddingTop: wp(2),
+        marginTop: wp(10),
         // paddingHorizontal:wp(10),
         // backgroundColor:'green'
     },
     lowerView:
     {
-        // height:wp(30),
-        // width:'100%',
-        flex: 0.14,
         justifyContent: 'flex-start',
         alignItems: 'center',
         // backgroundColor: colors.dark_green
@@ -76,13 +63,12 @@ const styles = StyleSheet.create({
     },
     checkBoxContainer:
     {
-        flex: 0.35,
         // backgroundColor: "red",
         justifyContent: 'center',
         flexDirection: 'row',
         // marginTop:wp(1),
-        paddingHorizontal: wp(11),
-        paddingTop:wp(2.5)
+        marginHorizontal: wp(11),
+        marginTop:wp(2)
 
     },
     checkBoxIcon:
@@ -97,7 +83,7 @@ const styles = StyleSheet.create({
         flex: 0.9,
         paddingHorizontal: wp(2),
         justifyContent: 'center',
-        // backgroundColor: colors.dark_orange,
+        color: colors.white,
     },
     checkBoxIconStyle:
     {
@@ -116,7 +102,6 @@ const styles = StyleSheet.create({
     {
         fontSize: wp(3.6),
         color: colors.white,
-
     },
     passwordStrength: {
         fontStyle: "italic",

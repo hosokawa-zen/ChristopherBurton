@@ -16,7 +16,7 @@ const styles= StyleSheet.create({
         // backgroundColor:colors.app_header_color
     },
     categoryView:{
-        flex:Platform.OS === 'ios' ? 0.11 : 0.15,
+        flex:Platform.OS === 'ios' ? 0.14 : 0.15,
         backgroundColor: colors.app_header_color,
         alignItems: 'center'
     },
@@ -27,7 +27,7 @@ const styles= StyleSheet.create({
             backgroundColor:colors.app_header_color,
         },
     flatListView:{
-        flex: Platform.OS === 'ios' ? 0.89 : 0.86,
+        flex: Platform.OS === 'ios' ? 0.86 : 0.86,
         backgroundColor: colors.app_header_color
 
     },

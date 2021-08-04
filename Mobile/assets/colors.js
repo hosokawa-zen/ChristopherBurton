@@ -2,7 +2,7 @@ const colors = {
     primary_Content:'#000000',
     secondary_Highlight:'#C42D3E',
     header:'#615167',
-    white:'#fff',
+    white:'#ffffff',
     black:'#000000',
     light_green_color:'#01C273',
     light_black_color:'#131313',
