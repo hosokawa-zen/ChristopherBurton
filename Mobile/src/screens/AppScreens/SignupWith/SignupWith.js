@@ -5,7 +5,7 @@ import React from 'react'
 import auth, {firebase} from '@react-native-firebase/auth'
 import database from '@react-native-firebase/database'
 import {GoogleSignin, statusCodes} from '@react-native-google-signin/google-signin'
-import {AccessToken, LoginManager} from 'react-native-fbsdk';
+import {AccessToken, LoginManager} from 'react-native-fbsdk-next';
 
 import {appleAuth, appleAuthAndroid,} from '@invertase/react-native-apple-authentication'
 import 'react-native-get-random-values'
